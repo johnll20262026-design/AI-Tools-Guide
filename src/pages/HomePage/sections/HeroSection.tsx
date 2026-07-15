@@ -89,9 +89,9 @@ export default function HeroSection() {
           </Button>
 
           <Button
-            variant="outline"
+            variant="secondary"
             size="lg"
-            className="h-12 px-8 rounded-full text-base font-semibold border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+            className="h-12 px-8 rounded-full text-base font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300"
             onClick={() => {
               document.getElementById('cases')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
