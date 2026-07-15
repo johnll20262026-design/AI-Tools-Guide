@@ -833,18 +833,18 @@ export default function LotteryPage() {
 
       {/* 中奖弹窗 */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader className="text-center">
-            <div className="mx-auto mb-3 size-14 rounded-full bg-primary/10 flex items-center justify-center">
-              <Gift className="size-7 text-primary" />
+            <div className="mx-auto mb-2 size-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <Gift className="size-6 text-primary" />
             </div>
             <DialogTitle className="text-xl">恭喜你中奖了！</DialogTitle>
-            <DialogDescription className="text-base">请截图保存本页面，凭中奖码领取奖品</DialogDescription>
+            <DialogDescription className="text-sm">请截图保存本页面，凭中奖码领取奖品</DialogDescription>
           </DialogHeader>
           {wonPrize && (
-            <div className="text-center space-y-4">
+            <div className="text-center space-y-3 py-2">
               {/* 奖品名称 */}
-              <div className="inline-block px-4 py-2 rounded-lg text-white font-bold text-lg" style={{ backgroundColor: wonPrize.color }}>
+              <div className="inline-block px-3 py-1.5 rounded-lg text-white font-bold text-base" style={{ backgroundColor: wonPrize.color }}>
                 {wonPrize.name}
               </div>
               <div className="text-sm font-semibold" style={{ color: wonPrize.color }}>
@@ -853,7 +853,7 @@ export default function LotteryPage() {
                 ) : wonPrize.winPrice > 0 ? (
                   <span>
                     <span className="line-through text-muted-foreground/60 text-xs mr-2">原价{wonPrize.originalPrice}元</span>
-                    抽中专享价 <span className="text-lg">{wonPrize.winPrice}元</span>
+                    抽中专享价 <span className="text-base">{wonPrize.winPrice}元</span>
                   </span>
                 ) : (
                   <span>🎊 专属优惠XXX元（原价{wonPrize.originalPrice}元）</span>
@@ -861,7 +861,7 @@ export default function LotteryPage() {
               </div>
 
               {/* 中奖码 */}
-              <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+              <div className="bg-muted/50 rounded-lg p-3 space-y-2">
                 <div className="flex items-center justify-center gap-2">
                   <Camera className="size-4 text-muted-foreground" />
                   <span className="text-xs text-muted-foreground">请先截图保存此页面</span>
@@ -869,7 +869,7 @@ export default function LotteryPage() {
                 <div className="bg-background rounded-lg border-2 border-dashed border-primary/40 p-3">
                   <p className="text-xs text-muted-foreground mb-1">你的中奖码</p>
                   <div className="flex items-center justify-center gap-2">
-                    <code className="text-lg font-mono font-bold tracking-widest text-primary select-all">{winCode}</code>
+                    <code className="text-base font-mono font-bold tracking-widest text-primary select-all">{winCode}</code>
                     <button
                       onClick={() => {
                         navigator.clipboard?.writeText(winCode);
@@ -880,16 +880,16 @@ export default function LotteryPage() {
                       <Copy className="size-4" />
                     </button>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">中奖时间：{winTime}</p>
+                  <p className="text-xs text-muted-foreground mt-1">中奖时间：{winTime}</p>
                 </div>
               </div>
 
               {/* 领取步骤 */}
-              <div className="bg-muted/50 rounded-lg p-4 text-left space-y-2">
+              <div className="bg-muted/50 rounded-lg p-3 text-left space-y-1.5">
                 <p className="text-sm font-semibold text-foreground flex items-center gap-1.5">
                   <Sparkles className="size-4 text-primary" /> 领取方式
                 </p>
-                <ol className="text-sm text-muted-foreground leading-relaxed space-y-1.5 list-decimal list-inside">
+                <ol className="text-xs text-muted-foreground leading-relaxed space-y-1 list-decimal list-inside">
                   <li>截图保存本页面（含中奖码和中奖时间）</li>
                   <li>使用微信扫描下方二维码关注公众号</li>
                   <li>在公众号发送：<span className="font-semibold text-foreground">{wonPrize?.name || 'AI视频制作实战教程'}</span></li>
@@ -897,13 +897,13 @@ export default function LotteryPage() {
                 </ol>
               </div>
 
-              <div className="flex flex-col items-center gap-2">
-                <QrCodeImage size="md" label="公众号二维码" />
+              <div className="flex flex-col items-center gap-1">
+                <QrCodeImage size="sm" label="公众号二维码" className="!w-28 !h-28" />
                 <p className="text-xs text-muted-foreground">请使用微信长按识别二维码关注公众号</p>
               </div>
             </div>
           )}
-          <DialogFooter className="flex-col sm:flex-col gap-2">
+          <DialogFooter className="flex-col sm:flex-col gap-2 mt-2">
             <Button className="w-full" onClick={() => setShowDialog(false)}>我已截图，去关注</Button>
             <Button variant="outline" className="w-full" onClick={() => setShowDialog(false)}>稍后领取</Button>
           </DialogFooter>
