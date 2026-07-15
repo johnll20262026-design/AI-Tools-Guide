@@ -5,7 +5,7 @@ import { GraduationCap, Zap, Code2, Clock, Calendar, ArrowRight } from 'lucide-r
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MOCK_LEARNING_PATHS } from '@/data/learningPaths';
-import { ALL_ARTICLES } from '@/data/articles';
+import { ALL_ARTICLES_META } from '@/data/articles-meta';
 
 const PATH_ICONS: Record<string, typeof GraduationCap> = {
   beginner: GraduationCap,
@@ -70,7 +70,7 @@ function PathsSection() {
                     <ul className="space-y-2">
                       {path.steps.map((step, si) => {
                         const articleId = `path-${path.id}-${step.step}`;
-                        const article = ALL_ARTICLES[articleId];
+                        const article = ALL_ARTICLES_META[articleId];
                         return (
                         <li key={step.step}>
                           <Link

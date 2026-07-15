@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ChevronRight, Code, Palette, Zap, Bot, Smartphone, Database, Clock, Calendar } from 'lucide-react';
 import type { ICaseItem } from '@/types/tutorial';
-import { ALL_ARTICLES } from '@/data/articles';
+import { ALL_ARTICLES_META } from '@/data/articles-meta';
 
 interface CasesSectionProps {
   cases: ICaseItem[];
@@ -156,7 +156,7 @@ function CaseCard({ item, index }: { item: ICaseItem; index: number }) {
               <ul className="space-y-2">
                 {item.steps.map((step) => {
                   const articleId = `case-${item.id}-${step.step}`;
-                  const article = ALL_ARTICLES[articleId];
+                  const article = ALL_ARTICLES_META[articleId];
                   return (
                   <li key={step.step}>
                     <Link

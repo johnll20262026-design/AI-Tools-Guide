@@ -1,7 +1,7 @@
 // EXPORTS: MOCK_CATEGORIES, MOCK_ARTICLES_BY_CATEGORY
 
 import type { ITutorialCategory, IArticle } from '@/types/tutorial';
-import { ALL_ARTICLES } from './articles';
+import { ALL_ARTICLES_META } from './articles-meta';
 
 export const MOCK_CATEGORIES: ITutorialCategory[] = [
   {
@@ -74,7 +74,7 @@ const CATEGORY_ARTICLE_IDS: Record<string, string[]> = {
 };
 
 function pickArticleMeta(id: string): IArticle {
-  const src = ALL_ARTICLES[id];
+  const src = ALL_ARTICLES_META[id];
   return {
     id: src.id,
     title: src.title,
