@@ -1,5 +1,5 @@
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
-import { ArrowLeft, Clock, Calendar, ChevronLeft, ChevronRight, Home, ArrowUpToLine, Sparkles } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, ChevronLeft, ChevronRight, Home, ArrowUpToLine, Sparkles, Loader2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
-import { ALL_ARTICLES } from '@/data/articles';
+import { ALL_ARTICLES_META, ARTICLE_IDS_WITH_FULL_CONTENT } from '@/data/articles-meta';
+import { ARTICLE_CONTENTS } from '@/data/articles-content';
 import { MOCK_ARTICLES_BY_CATEGORY } from '@/data/categories';
 import { MOCK_LEARNING_PATHS } from '@/data/learningPaths';
 import { MOCK_CASES } from '@/data/cases';
+import type { IArticle } from '@/types/tutorial';
 
 function parseArticleId(id: string) {
   const pathMatch = id.match(/^path-(beginner|intermediate|professional)-(\d+)$/);
@@ -97,8 +99,17 @@ export default function ArticleDetailPage() {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [articleId]);
 
-  const article = articleId ? ALL_ARTICLES[articleId] : undefined;
+  const meta = articleId ? ALL_ARTICLES_META[articleId] : undefined;
   const parsed = articleId ? parseArticleId(articleId) : null;
+
+  const article: IArticle | undefined = useMemo(() => {
+    if (!meta || !articleId) return undefined;
+    const content = ARTICLE_CONTENTS[articleId] || '';
+    return {
+      ...meta,
+      content,
+    };
+  }, [meta, articleId]);
 
   const nav = useMemo(() => {
     if (!parsed || !articleId) return null;
@@ -122,9 +133,10 @@ export default function ArticleDetailPage() {
       const cur = parsed.step;
       const prevId = cur > 1 ? `path-${parsed.pathId}-${cur - 1}` : null;
       const nextId = cur < total ? `path-${parsed.pathId}-${cur + 1}` : null;
+      const getTitle = (id: string) => ALL_ARTICLES_META[id]?.title;
       return {
-        prev: prevId && ALL_ARTICLES[prevId] ? { id: prevId, title: ALL_ARTICLES[prevId].title } : null,
-        next: nextId && ALL_ARTICLES[nextId] ? { id: nextId, title: ALL_ARTICLES[nextId].title } : null,
+        prev: prevId && getTitle(prevId) ? { id: prevId, title: getTitle(prevId)! } : null,
+        next: nextId && getTitle(nextId) ? { id: nextId, title: getTitle(nextId)! } : null,
         label: `${pathData.title} · 第 ${cur}/${total} 步`,
       };
     }
@@ -136,15 +148,27 @@ export default function ArticleDetailPage() {
       const cur = parsed.step;
       const prevId = cur > 1 ? `case-${parsed.caseId}-${cur - 1}` : null;
       const nextId = cur < total ? `case-${parsed.caseId}-${cur + 1}` : null;
+      const getTitle = (id: string) => ALL_ARTICLES_META[id]?.title;
       return {
-        prev: prevId && ALL_ARTICLES[prevId] ? { id: prevId, title: ALL_ARTICLES[prevId].title } : null,
-        next: nextId && ALL_ARTICLES[nextId] ? { id: nextId, title: ALL_ARTICLES[nextId].title } : null,
+        prev: prevId && getTitle(prevId) ? { id: prevId, title: getTitle(prevId)! } : null,
+        next: nextId && getTitle(nextId) ? { id: nextId, title: getTitle(nextId)! } : null,
         label: `${caseData.title} · 第 ${cur}/${total} 步`,
       };
     }
 
     return null;
   }, [parsed, articleId]);
+
+  const relatedArticles = useMemo(() => {
+    if (!meta?.related) return [];
+    return meta.related
+      .map(rid => {
+        const m = ALL_ARTICLES_META[rid];
+        if (!m) return null;
+        return m;
+      })
+      .filter((a): a is NonNullable<typeof a> => Boolean(a));
+  }, [meta]);
 
   if (!article) {
     return (
@@ -410,48 +434,42 @@ export default function ArticleDetailPage() {
         </div>
 
         {/* 相关文章推荐 — 基于 article.related 字段 */}
-        {article.related && article.related.length > 0 && (() => {
-          const relatedArticles = article.related
-            .map(rid => ALL_ARTICLES[rid])
-            .filter((a): a is NonNullable<typeof a> => Boolean(a));
-          if (relatedArticles.length === 0) return null;
-          return (
-            <section className="mt-10 pt-8 border-t border-border">
-              <div className="flex items-center gap-2 mb-5">
-                <Sparkles className="size-4 text-primary" />
-                <h2 className="text-base font-bold text-foreground">相关推荐</h2>
-                <span className="h-px flex-1 bg-border" />
-              </div>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {relatedArticles.map(ra => (
-                  <li key={ra.id}>
-                    <NavLink
-                      to={`/article/${ra.id}`}
-                      className="group/rel flex items-start gap-3 p-4 rounded-xl border border-border hover:border-primary/40 hover:bg-card transition-colors h-full"
-                    >
-                      <ChevronRight className="size-4 shrink-0 mt-0.5 text-muted-foreground group-hover/rel:text-primary transition-colors" />
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-semibold text-foreground group-hover/rel:text-primary transition-colors line-clamp-2">
-                          {ra.title}
-                        </p>
-                        <div className="mt-2 flex items-center gap-3 text-[11px] text-muted-foreground">
-                          <span className="inline-flex items-center gap-1">
-                            <Clock className="size-3" />
-                            {ra.readTime}
-                          </span>
-                          <span className="inline-flex items-center gap-1">
-                            <Calendar className="size-3" />
-                            {ra.date}
-                          </span>
-                        </div>
+        {relatedArticles.length > 0 && (
+          <section className="mt-10 pt-8 border-t border-border">
+            <div className="flex items-center gap-2 mb-5">
+              <Sparkles className="size-4 text-primary" />
+              <h2 className="text-base font-bold text-foreground">相关推荐</h2>
+              <span className="h-px flex-1 bg-border" />
+            </div>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {relatedArticles.map(ra => (
+                <li key={ra.id}>
+                  <NavLink
+                    to={`/article/${ra.id}`}
+                    className="group/rel flex items-start gap-3 p-4 rounded-xl border border-border hover:border-primary/40 hover:bg-card transition-colors h-full"
+                  >
+                    <ChevronRight className="size-4 shrink-0 mt-0.5 text-muted-foreground group-hover/rel:text-primary transition-colors" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-foreground group-hover/rel:text-primary transition-colors line-clamp-2">
+                        {ra.title}
+                      </p>
+                      <div className="mt-2 flex items-center gap-3 text-[11px] text-muted-foreground">
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="size-3" />
+                          {ra.readTime}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <Calendar className="size-3" />
+                          {ra.date}
+                        </span>
                       </div>
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })()}
+                    </div>
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
       <BackToTopButton />
       <Footer />
