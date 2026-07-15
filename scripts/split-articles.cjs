@@ -109,6 +109,12 @@ metaContent = metaContent.replace(
   'export const ALL_ARTICLES_META: Record<string, Omit<IArticle, "content">> = {'
 );
 
+// Fix ARTICLE_IDS_WITH_FULL_CONTENT reference at end of file
+metaContent = metaContent.replace(
+  'export const ARTICLE_IDS_WITH_FULL_CONTENT = new Set(Object.keys(ALL_ARTICLES));',
+  'export const ARTICLE_IDS_WITH_FULL_CONTENT = new Set(Object.keys(ALL_ARTICLES_META));'
+);
+
 // Write meta file
 const metaPath = path.join(__dirname, '..', 'src', 'data', 'articles-meta.ts');
 fs.writeFileSync(metaPath, metaContent, 'utf-8');

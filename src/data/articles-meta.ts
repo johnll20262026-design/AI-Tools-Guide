@@ -822,4 +822,4 @@ export const ALL_ARTICLES_META: Record<string, Omit<IArticle, "content">> = {
 
 };
 
-export const ARTICLE_IDS_WITH_FULL_CONTENT = new Set(Object.keys(ALL_ARTICLES));
+export const ARTICLE_IDS_WITH_FULL_CONTENT = new Set(Object.keys(ALL_ARTICLES_META));
