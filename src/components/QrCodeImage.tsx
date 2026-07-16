@@ -23,6 +23,7 @@ export default function QrCodeImage({
 }: QrCodeImageProps) {
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
+  const isPriority = size === 'xl';
 
   if (errored) {
     return (
@@ -46,9 +47,9 @@ export default function QrCodeImage({
         width={SIZE_MAP[size].img}
         height={SIZE_MAP[size].img}
         className={`w-full h-full object-contain transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-        loading="eager"
+        loading={isPriority ? 'eager' : 'lazy'}
         decoding="async"
-        fetchPriority="high"
+        fetchPriority={isPriority ? 'high' : 'auto'}
         onLoad={() => setLoaded(true)}
         onError={() => setErrored(true)}
       />

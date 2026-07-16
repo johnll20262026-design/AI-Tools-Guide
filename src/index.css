@@ -70,7 +70,7 @@ table {
   -webkit-overflow-scrolling: touch;
 }
 
-/* 性能优化：首屏以下区块延迟渲染 */
+/* 性能优化：首屏以下区块延迟渲染 - 仅作用于首页main内的section */
 main > section + section {
   content-visibility: auto;
   contain-intrinsic-size: 1px 600px;
@@ -88,8 +88,7 @@ main > section + section {
   }
 }
 
-/* GPU加速提示：动画元素使用独立合成层 */
-[class*="animate-"],
-[data-motion] {
+/* GPU加速提示：仅对正在执行动画的关键元素使用独立合成层 */
+.will-animate {
   will-change: transform, opacity;
 }
