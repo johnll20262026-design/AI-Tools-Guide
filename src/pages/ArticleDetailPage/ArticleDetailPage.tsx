@@ -8,7 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { loadArticle } from '@/data/articles';
-import { ALL_ARTICLES_META, ARTICLE_IDS_WITH_FULL_CONTENT } from '@/data/articles-meta';
+import { ALL_ARTICLES_META } from '@/data/articles-meta';
 import { MOCK_ARTICLES_BY_CATEGORY } from '@/data/categories';
 import { MOCK_LEARNING_PATHS } from '@/data/learningPaths';
 import { MOCK_CASES } from '@/data/cases';
@@ -28,11 +28,6 @@ function parseArticleId(id: string) {
     return { type: 'category' as const, categoryId: catMatch[1], index: parseInt(catMatch[2]) };
   }
   return null;
-}
-
-interface INavItem {
-  id: string;
-  title: string;
 }
 
 function ReadingProgressBar() {

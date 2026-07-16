@@ -166,7 +166,7 @@ export default function Footer() {
                 key={link.anchorId}
                 type="button"
                 onClick={() => scrollToAnchor(link.anchorId)}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer"
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer min-h-[44px] px-2 py-2 flex items-center"
               >
                 {link.label}
               </button>
@@ -175,7 +175,7 @@ export default function Footer() {
               <NavLink
                 key={link.to}
                 to={link.to}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 min-h-[44px] px-2 py-2 flex items-center"
               >
                 {link.label}
               </NavLink>

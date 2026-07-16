@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { ArrowLeft, Mic, MicOff, Loader2, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -85,7 +85,6 @@ function findClosestString(freq: number): (typeof STRINGS)[number] | null {
 }
 
 export default function GuitarTunerPage() {
-  const navigate = useNavigate();
   const [mode, setMode] = useState<'auto' | 'manual'>('auto');
   const [selectedString, setSelectedString] = useState(0);
   const [detectedFreq, setDetectedFreq] = useState(0);
@@ -409,7 +408,7 @@ export default function GuitarTunerPage() {
             transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -4, scale: 1.05, boxShadow: '0 8px 24px rgba(22,156,123,0.12)' }}
             whileTap={{ scale: 0.92 }}
-            className={`w-11 h-14 sm:w-14 sm:h-18 md:w-16 md:h-20 rounded-lg md:rounded-xl flex flex-col items-center justify-center transition-colors flex-shrink-0 ${
+            className={`w-11 h-14 sm:w-14 sm:h-[72px] md:w-16 md:h-20 rounded-lg md:rounded-xl flex flex-col items-center justify-center transition-colors flex-shrink-0 ${
               selectedString === idx
                 ? 'border-2 border-primary bg-primary/10 shadow-[0_0_16px_rgba(22_156_123_0.15)]'
                 : `border-2 border-border bg-card hover:border-primary/30 ${!hasStarted && !isListening ? 'animate-pulse' : ''}`

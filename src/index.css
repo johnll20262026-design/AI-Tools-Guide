@@ -21,9 +21,10 @@ body {
   touch-action: manipulation;
 }
 
-a, button, [role="button"] {
+a, button, [role="button"], summary {
   touch-action: manipulation;
   cursor: pointer;
+  -webkit-touch-callout: none;
 }
 
 a {
@@ -31,7 +32,7 @@ a {
   position: relative;
 }
 
-img {
+img, video, svg, canvas {
   max-width: 100%;
   height: auto;
 }
@@ -46,11 +47,25 @@ table {
   max-width: 100%;
 }
 
+/* 移动端最小点击区域与交互反馈 */
 @media (max-width: 768px) {
-  nav a, nav button,
-  header a, header button,
-  .flex a, .flex button {
+  a, button, [role="button"], summary {
     min-height: 44px;
+    min-width: 44px;
+  }
+
+  a:active,
+  button:active,
+  [role="button"]:active,
+  summary:active {
+    opacity: 0.85;
+    transform: scale(0.98);
   }
 }
 
+/* 弹窗安全区域：确保移动端不超出视口 */
+[data-slot="dialog-content"] {
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}

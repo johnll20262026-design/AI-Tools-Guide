@@ -1,9 +1,9 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Gift, Sparkles, ChevronRight, Play, Copy, Camera, Check, Home, QrCode } from 'lucide-react';
+import { ArrowLeft, Gift, Sparkles, ChevronRight, Play, Copy, Camera, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,

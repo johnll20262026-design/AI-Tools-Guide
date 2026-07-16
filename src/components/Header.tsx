@@ -245,7 +245,7 @@ export default function Header() {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="md:h-11 md:w-11 h-11 w-11"
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-label={mobileOpen ? '关闭菜单' : '打开菜单'}
         >

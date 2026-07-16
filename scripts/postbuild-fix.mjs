@@ -48,4 +48,4 @@ ${cleanHead}
 </html>`;
 
 writeFileSync(indexPath, finalHtml, 'utf-8');
-console.log('✅ Post-build: Cleaned all Miaoda injected content, fixed title and meta tags');
+console.log('✅ Post-build: HTML head sanitized, title and meta tags fixed');
