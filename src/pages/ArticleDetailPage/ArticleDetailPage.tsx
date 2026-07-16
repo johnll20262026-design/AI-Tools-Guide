@@ -1,5 +1,5 @@
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
-import { ArrowLeft, Clock, Calendar, ChevronLeft, ChevronRight, Home, ArrowUpToLine, Sparkles, Loader2 } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, ChevronLeft, ChevronRight, Home, ArrowUpToLine, Sparkles } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
-import { ALL_ARTICLES_META, ARTICLE_IDS_WITH_FULL_CONTENT } from '@/data/articles-meta';
-import { ARTICLE_CONTENTS } from '@/data/articles-content';
+import { ALL_ARTICLES, ARTICLE_IDS_WITH_FULL_CONTENT } from '@/data/articles';
 import { MOCK_ARTICLES_BY_CATEGORY } from '@/data/categories';
 import { MOCK_LEARNING_PATHS } from '@/data/learningPaths';
 import { MOCK_CASES } from '@/data/cases';
@@ -99,17 +98,8 @@ export default function ArticleDetailPage() {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [articleId]);
 
-  const meta = articleId ? ALL_ARTICLES_META[articleId] : undefined;
+  const article: IArticle | undefined = articleId ? ALL_ARTICLES[articleId] : undefined;
   const parsed = articleId ? parseArticleId(articleId) : null;
-
-  const article: IArticle | undefined = useMemo(() => {
-    if (!meta || !articleId) return undefined;
-    const content = ARTICLE_CONTENTS[articleId] || '';
-    return {
-      ...meta,
-      content,
-    };
-  }, [meta, articleId]);
 
   const nav = useMemo(() => {
     if (!parsed || !articleId) return null;
@@ -133,7 +123,7 @@ export default function ArticleDetailPage() {
       const cur = parsed.step;
       const prevId = cur > 1 ? `path-${parsed.pathId}-${cur - 1}` : null;
       const nextId = cur < total ? `path-${parsed.pathId}-${cur + 1}` : null;
-      const getTitle = (id: string) => ALL_ARTICLES_META[id]?.title;
+      const getTitle = (id: string) => ALL_ARTICLES[id]?.title;
       return {
         prev: prevId && getTitle(prevId) ? { id: prevId, title: getTitle(prevId)! } : null,
         next: nextId && getTitle(nextId) ? { id: nextId, title: getTitle(nextId)! } : null,
@@ -148,7 +138,7 @@ export default function ArticleDetailPage() {
       const cur = parsed.step;
       const prevId = cur > 1 ? `case-${parsed.caseId}-${cur - 1}` : null;
       const nextId = cur < total ? `case-${parsed.caseId}-${cur + 1}` : null;
-      const getTitle = (id: string) => ALL_ARTICLES_META[id]?.title;
+      const getTitle = (id: string) => ALL_ARTICLES[id]?.title;
       return {
         prev: prevId && getTitle(prevId) ? { id: prevId, title: getTitle(prevId)! } : null,
         next: nextId && getTitle(nextId) ? { id: nextId, title: getTitle(nextId)! } : null,
@@ -160,15 +150,21 @@ export default function ArticleDetailPage() {
   }, [parsed, articleId]);
 
   const relatedArticles = useMemo(() => {
-    if (!meta?.related) return [];
-    return meta.related
+    if (!article?.related) return [];
+    return article.related
       .map(rid => {
-        const m = ALL_ARTICLES_META[rid];
-        if (!m) return null;
-        return m;
+        const a = ALL_ARTICLES[rid];
+        if (!a) return null;
+        return {
+          id: a.id,
+          title: a.title,
+          description: a.description,
+          readTime: a.readTime,
+          date: a.date,
+        };
       })
       .filter((a): a is NonNullable<typeof a> => Boolean(a));
-  }, [meta]);
+  }, [article]);
 
   if (!article) {
     return (
