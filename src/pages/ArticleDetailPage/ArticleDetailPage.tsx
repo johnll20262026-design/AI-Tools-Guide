@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
-import { ALL_ARTICLES, ARTICLE_IDS_WITH_FULL_CONTENT } from '@/data/articles';
+import { loadArticle } from '@/data/articles';
+import { ALL_ARTICLES_META, ARTICLE_IDS_WITH_FULL_CONTENT } from '@/data/articles-meta';
 import { MOCK_ARTICLES_BY_CATEGORY } from '@/data/categories';
 import { MOCK_LEARNING_PATHS } from '@/data/learningPaths';
 import { MOCK_CASES } from '@/data/cases';
@@ -93,12 +94,41 @@ function BackToTopButton() {
 export default function ArticleDetailPage() {
   const { articleId } = useParams<{ articleId: string }>();
   const navigate = useNavigate();
+  const [article, setArticle] = useState<IArticle | null | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+
+  const goBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [articleId]);
 
-  const article: IArticle | undefined = articleId ? ALL_ARTICLES[articleId] : undefined;
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setArticle(undefined);
+    if (!articleId) {
+      setArticle(null);
+      setLoading(false);
+      return;
+    }
+    loadArticle(articleId).then(a => {
+      if (!cancelled) {
+        setArticle(a);
+        setLoading(false);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [articleId]);
+
   const parsed = articleId ? parseArticleId(articleId) : null;
 
   const nav = useMemo(() => {
@@ -123,7 +153,7 @@ export default function ArticleDetailPage() {
       const cur = parsed.step;
       const prevId = cur > 1 ? `path-${parsed.pathId}-${cur - 1}` : null;
       const nextId = cur < total ? `path-${parsed.pathId}-${cur + 1}` : null;
-      const getTitle = (id: string) => ALL_ARTICLES[id]?.title;
+      const getTitle = (id: string) => ALL_ARTICLES_META[id]?.title;
       return {
         prev: prevId && getTitle(prevId) ? { id: prevId, title: getTitle(prevId)! } : null,
         next: nextId && getTitle(nextId) ? { id: nextId, title: getTitle(nextId)! } : null,
@@ -138,7 +168,7 @@ export default function ArticleDetailPage() {
       const cur = parsed.step;
       const prevId = cur > 1 ? `case-${parsed.caseId}-${cur - 1}` : null;
       const nextId = cur < total ? `case-${parsed.caseId}-${cur + 1}` : null;
-      const getTitle = (id: string) => ALL_ARTICLES[id]?.title;
+      const getTitle = (id: string) => ALL_ARTICLES_META[id]?.title;
       return {
         prev: prevId && getTitle(prevId) ? { id: prevId, title: getTitle(prevId)! } : null,
         next: nextId && getTitle(nextId) ? { id: nextId, title: getTitle(nextId)! } : null,
@@ -153,7 +183,7 @@ export default function ArticleDetailPage() {
     if (!article?.related) return [];
     return article.related
       .map(rid => {
-        const a = ALL_ARTICLES[rid];
+        const a = ALL_ARTICLES_META[rid];
         if (!a) return null;
         return {
           id: a.id,
@@ -165,6 +195,22 @@ export default function ArticleDetailPage() {
       })
       .filter((a): a is NonNullable<typeof a> => Boolean(a));
   }, [article]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <SEO title="加载中..." description="正在加载文章内容" />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <div className="size-10 mx-auto border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+            <p className="text-sm text-muted-foreground">正在加载文章...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!article) {
     return (
@@ -183,7 +229,7 @@ export default function ArticleDetailPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 justify-center">
-              <Button variant="outline" onClick={() => navigate(-1)} className="gap-2 h-11">
+              <Button variant="outline" onClick={goBack} className="gap-2 h-11">
                 <ArrowLeft className="size-4" />
                 返回上一级
               </Button>
@@ -209,7 +255,7 @@ export default function ArticleDetailPage() {
         <div className="flex items-center gap-2 md:gap-3 mb-6 md:mb-8 flex-wrap -ml-2">
           <button
             type="button"
-            onClick={() => navigate(-1)}
+            onClick={goBack}
             className="inline-flex items-center gap-2 text-xs md:text-sm font-medium text-muted-foreground hover:text-primary transition-colors min-h-[44px] px-2"
           >
             <ArrowLeft className="size-4" />
@@ -413,7 +459,7 @@ export default function ArticleDetailPage() {
         <div className="mt-6 md:mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
           <Button
             variant="outline"
-            onClick={() => navigate(-1)}
+            onClick={goBack}
             className="gap-2 h-11"
           >
             <ArrowLeft className="size-4" />

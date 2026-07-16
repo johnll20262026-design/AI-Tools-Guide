@@ -78,14 +78,17 @@ export default function RouteLoadingIndicator() {
   if (!loading) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] h-1 bg-transparent pointer-events-none">
+    <div className="fixed top-0 left-0 right-0 z-[100] pointer-events-none">
       <div
-        className="h-full bg-gradient-to-r from-primary to-teal-400 shadow-lg shadow-primary/50"
+        className="h-1.5 bg-gradient-to-r from-primary to-teal-400 shadow-lg shadow-primary/50"
         style={{
           width: `${Math.min(progress, 100)}%`,
           transition: 'width 0.15s ease-out',
         }}
       />
+      <div className="sr-only" role="status" aria-live="polite">
+        页面加载中
+      </div>
     </div>
   );
 }

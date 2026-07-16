@@ -18,15 +18,9 @@ async function generateSitemap() {
     { url: '/privacy', changefreq: 'yearly', priority: '0.3' },
   ];
 
-  const articlesPath = path.join(rootDir, 'src', 'data', 'articles.ts');
-  const articlesContent = fs.readFileSync(articlesPath, 'utf-8');
-
-  const articleIdRegex = /^\s{2}'([a-z][a-z0-9-]+)':\s*\{/gm;
-  const articleIds = [];
-  let match;
-  while ((match = articleIdRegex.exec(articlesContent)) !== null) {
-    articleIds.push(match[1]);
-  }
+  const articlesDir = path.join(rootDir, 'src', 'data', 'articles');
+  const articleFiles = fs.readdirSync(articlesDir).filter(f => f.endsWith('.ts') && f !== 'index.ts');
+  const articleIds = articleFiles.map(f => f.replace(/\.ts$/, '')).sort();
 
   const today = new Date().toISOString().split('T')[0];
 
