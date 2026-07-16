@@ -7,10 +7,23 @@ html, body, #root {
   background-color: var(--background);
   color: var(--foreground);
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
+
+a, button, [role="button"] {
+  touch-action: manipulation;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+

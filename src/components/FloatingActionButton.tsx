@@ -67,7 +67,7 @@ export default function FloatingActionButton() {
     <>
       {menuOpen && (
         <div
-          className="fixed inset-0 z-40"
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[1px] animate-in fade-in duration-200"
           onClick={() => setMenuOpen(false)}
         />
       )}
