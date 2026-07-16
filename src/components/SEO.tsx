@@ -15,6 +15,7 @@ const DYNAMIC_META_NAMES = [
   'description',
   'keywords',
   'author',
+  'twitter:card',
   'twitter:title',
   'twitter:description',
   'twitter:image',

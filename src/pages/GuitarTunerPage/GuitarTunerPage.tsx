@@ -246,7 +246,7 @@ export default function GuitarTunerPage() {
           </h1>
 
       {/* 音分表盘 */}
-      <div className="relative w-full max-w-[340px] md:max-w-[400px] h-[180px] md:h-[220px] mb-6 md:mb-8">
+      <div className="relative w-full max-w-[300px] sm:max-w-[340px] md:max-w-[400px] h-[180px] md:h-[220px] mb-6 md:mb-8">
         <svg viewBox="0 0 280 160" className="w-full h-full">
           <defs>
             <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -408,7 +408,7 @@ export default function GuitarTunerPage() {
             transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -4, scale: 1.05, boxShadow: '0 8px 24px rgba(22,156,123,0.12)' }}
             whileTap={{ scale: 0.92 }}
-            className={`w-11 h-14 sm:w-14 sm:h-[72px] md:w-16 md:h-20 rounded-lg md:rounded-xl flex flex-col items-center justify-center transition-colors flex-shrink-0 ${
+            className={`w-10 h-14 sm:w-14 sm:h-[72px] md:w-16 md:h-20 rounded-lg md:rounded-xl flex flex-col items-center justify-center transition-colors flex-shrink-0 ${
               selectedString === idx
                 ? 'border-2 border-primary bg-primary/10 shadow-[0_0_16px_rgba(22_156_123_0.15)]'
                 : `border-2 border-border bg-card hover:border-primary/30 ${!hasStarted && !isListening ? 'animate-pulse' : ''}`

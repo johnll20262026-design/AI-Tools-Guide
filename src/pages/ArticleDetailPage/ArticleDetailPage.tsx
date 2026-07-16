@@ -260,6 +260,7 @@ export default function ArticleDetailPage() {
           <button
             type="button"
             onClick={() => navigate('/')}
+            data-route-link
             className="inline-flex items-center gap-1.5 text-xs md:text-sm font-medium text-muted-foreground hover:text-primary transition-colors min-h-[44px] px-2"
           >
             <Home className="size-3.5" />

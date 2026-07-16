@@ -313,6 +313,7 @@ export default function Header() {
                       key={item.label}
                       type="button"
                       onClick={() => scrollToAnchor(item.anchorId)}
+                      data-route-link={isHome ? undefined : ''}
                       className="w-full text-left px-3 py-2 min-h-[44px] rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors flex items-center"
                     >
                       {item.label}
@@ -339,6 +340,7 @@ export default function Header() {
                       key={item.label}
                       type="button"
                       onClick={() => scrollToAnchor(item.anchorId)}
+                      data-route-link={isHome ? undefined : ''}
                       className="w-full text-left px-3 py-2 min-h-[44px] rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors flex items-center"
                     >
                       {item.label}
@@ -365,6 +367,7 @@ export default function Header() {
                       key={item.label}
                       type="button"
                       onClick={() => scrollToAnchor(item.anchorId)}
+                      data-route-link={isHome ? undefined : ''}
                       className="w-full text-left px-3 py-2 min-h-[44px] rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors flex items-center"
                     >
                       {item.label}

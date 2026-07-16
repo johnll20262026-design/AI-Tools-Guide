@@ -11,6 +11,7 @@ const sourceHtml = readFileSync(sourceIndexPath, 'utf-8');
 
 const assetScripts = [...builtHtml.matchAll(/<script type="module"[^>]*crossorigin[^>]*src="[^"]+"[^>]*><\/script>/g)].map(m => m[0]);
 const assetLinks = [...builtHtml.matchAll(/<link[^>]*rel="(?:stylesheet|modulepreload)"[^>]*>/g)].map(m => m[0]);
+const preloadLinks = [...sourceHtml.matchAll(/<link[^>]*rel="preload"[^>]*>/g)].map(m => m[0]);
 const polyfillScript = builtHtml.includes('assets/polyfills.js') 
   ? builtHtml.match(/<script>\(function\(\)\{[\s\S]*?polyfills\.js[\s\S]*?\}\)\(\);<\/script>/)?.[0] || ''
   : '';
@@ -34,6 +35,7 @@ const cleanHead = `
     <meta name="twitter:title" content="AI工具指南 - 面向中文用户的AI工具实战教程与落地指南" />
     <meta name="twitter:description" content="面向中文用户的AI工具实战教程与落地指南，提供系统化的AI工具学习路径，配套免费在线工具。" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
+    ${preloadLinks.join('\n    ')}
     ${polyfillScript}
     ${assetLinks.join('\n    ')}
     ${assetScripts.join('\n    ')}
