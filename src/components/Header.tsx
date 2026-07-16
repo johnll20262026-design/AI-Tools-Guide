@@ -69,14 +69,16 @@ function NavDropdown({ label, isActive, children }: NavDropdownProps) {
 interface DropdownItemProps {
   label: string;
   onClick: () => void;
+  routeLink?: boolean;
 }
 
-function DropdownItem({ label, onClick }: DropdownItemProps) {
+function DropdownItem({ label, onClick, routeLink }: DropdownItemProps) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:text-primary hover:bg-muted/50 transition-colors duration-150 cursor-pointer whitespace-nowrap"
+      data-route-link={routeLink ? '' : undefined}
+      className="w-full text-left px-4 py-2.5 min-h-[44px] text-sm text-foreground hover:text-primary hover:bg-muted/50 transition-colors duration-150 cursor-pointer whitespace-nowrap flex items-center"
     >
       {label}
     </button>
@@ -163,12 +165,13 @@ export default function Header() {
                 <DropdownItem
                   key={item.label}
                   label={item.label}
+                  routeLink
                   onClick={() => navigateTo(item.to)}
                 />
               ) : (
                 <div
                   key={item.label}
-                  className="px-4 py-2.5 text-sm text-muted-foreground"
+                  className="px-4 py-2.5 min-h-[44px] text-sm text-muted-foreground flex items-center"
                 >
                   {item.label}
                 </div>
@@ -213,7 +216,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => scrollToAnchor('stats')}
-            className={`relative px-4 py-2 text-sm font-semibold transition-colors duration-200 cursor-pointer ${
+            className={`relative px-4 py-2 min-h-[44px] text-sm font-semibold transition-colors duration-200 cursor-pointer flex items-center ${
               isAnchorActive('stats')
                 ? 'text-primary'
                 : 'text-foreground hover:text-primary'
@@ -262,7 +265,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => toggleMobileExpand('resources')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 min-h-[44px] rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
               >
                 免费资源
                 <ChevronDown className={`size-4 transition-transform duration-200 ${mobileExpanded === 'resources' ? 'rotate-180' : ''}`} />
@@ -275,14 +278,15 @@ export default function Header() {
                         key={item.label}
                         type="button"
                         onClick={() => navigateTo(item.to)}
-                        className="w-full text-left px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                        data-route-link
+                        className="w-full text-left px-3 py-2 min-h-[44px] rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors flex items-center"
                       >
                         {item.label}
                       </button>
                     ) : (
                       <div
                         key={item.label}
-                        className="px-3 py-2 text-sm text-muted-foreground/60"
+                        className="px-3 py-2 min-h-[44px] text-sm text-muted-foreground/60 flex items-center"
                       >
                         {item.label}
                       </div>
@@ -297,7 +301,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => toggleMobileExpand('categories')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 min-h-[44px] rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
               >
                 教程分类
                 <ChevronDown className={`size-4 transition-transform duration-200 ${mobileExpanded === 'categories' ? 'rotate-180' : ''}`} />
@@ -309,7 +313,7 @@ export default function Header() {
                       key={item.label}
                       type="button"
                       onClick={() => scrollToAnchor(item.anchorId)}
-                      className="w-full text-left px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                      className="w-full text-left px-3 py-2 min-h-[44px] rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors flex items-center"
                     >
                       {item.label}
                     </button>
@@ -323,7 +327,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => toggleMobileExpand('paths')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 min-h-[44px] rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
               >
                 学习路径
                 <ChevronDown className={`size-4 transition-transform duration-200 ${mobileExpanded === 'paths' ? 'rotate-180' : ''}`} />
@@ -335,7 +339,7 @@ export default function Header() {
                       key={item.label}
                       type="button"
                       onClick={() => scrollToAnchor(item.anchorId)}
-                      className="w-full text-left px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                      className="w-full text-left px-3 py-2 min-h-[44px] rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors flex items-center"
                     >
                       {item.label}
                     </button>
@@ -349,7 +353,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => toggleMobileExpand('cases')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 min-h-[44px] rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
               >
                 实战案例
                 <ChevronDown className={`size-4 transition-transform duration-200 ${mobileExpanded === 'cases' ? 'rotate-180' : ''}`} />
@@ -361,7 +365,7 @@ export default function Header() {
                       key={item.label}
                       type="button"
                       onClick={() => scrollToAnchor(item.anchorId)}
-                      className="w-full text-left px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                      className="w-full text-left px-3 py-2 min-h-[44px] rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors flex items-center"
                     >
                       {item.label}
                     </button>
@@ -374,7 +378,7 @@ export default function Header() {
             <button
               type="button"
               onClick={() => scrollToAnchor('stats')}
-              className="w-full text-left px-3 py-2.5 rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+              className="w-full text-left px-3 py-2.5 min-h-[44px] rounded-md text-sm font-semibold text-foreground hover:text-primary hover:bg-muted/50 transition-colors flex items-center"
             >
               数据统计
             </button>
@@ -383,7 +387,7 @@ export default function Header() {
             <NavLink
               to="/membership"
               onClick={closeMobile}
-              className="mt-2 w-full flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold bg-primary text-white hover:bg-primary/90 transition-colors"
+              className="mt-2 w-full flex items-center justify-center gap-1.5 px-3 py-2.5 min-h-[44px] rounded-lg text-sm font-semibold bg-primary text-white hover:bg-primary/90 transition-colors"
             >
               <Diamond className="size-3.5" />
               AI资讯会员

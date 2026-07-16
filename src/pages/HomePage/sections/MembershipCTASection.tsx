@@ -98,7 +98,7 @@ export default function MembershipCTASection() {
               <span className="text-orange-500 font-semibold"> 前{MEMBERSHIP_EARLY_BIRD_LIMIT}名早鸟价最高立省¥500</span>
             </p>
             <div className="inline-block">
-              <Button asChild size="lg" className="gap-2 text-base px-10 py-6 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95 transition-all duration-200 hover:-translate-y-0.5">
+              <Button asChild size="lg" className="gap-2 text-base px-10 py-6 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-105 active:scale-95 transition-all duration-200">
                 <NavLink to="/membership">
                   <Diamond className="size-4" />
                   查看全部方案立即订阅

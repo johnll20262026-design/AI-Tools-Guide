@@ -101,7 +101,7 @@ export default function GuitarTunerPage() {
   const streamRef = useRef<MediaStream | null>(null);
   const animFrameRef = useRef<number>(0);
 
-  const stopListening = useCallback(() => {
+  const stopListening = useCallback(async () => {
     if (animFrameRef.current) {
       cancelAnimationFrame(animFrameRef.current);
       animFrameRef.current = 0;
@@ -111,7 +111,7 @@ export default function GuitarTunerPage() {
       streamRef.current = null;
     }
     if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
-      audioCtxRef.current.close();
+      await audioCtxRef.current.close();
       audioCtxRef.current = null;
     }
     analyserRef.current = null;
@@ -355,7 +355,7 @@ export default function GuitarTunerPage() {
         <button
           type="button"
           onClick={() => toggleMode('auto')}
-          className={`px-4 md:px-5 py-2 rounded-full text-xs md:text-sm font-semibold transition-all ${
+          className={`px-4 md:px-5 py-2 min-h-[44px] rounded-full text-xs md:text-sm font-semibold transition-all ${
             mode === 'auto'
               ? 'text-primary border-2 border-primary bg-primary/10'
               : 'text-muted-foreground border-2 border-border bg-transparent hover:border-primary/30'
@@ -366,7 +366,7 @@ export default function GuitarTunerPage() {
         <button
           type="button"
           onClick={() => toggleMode('manual')}
-          className={`px-4 md:px-5 py-2 rounded-full text-xs md:text-sm font-semibold transition-all ${
+          className={`px-4 md:px-5 py-2 min-h-[44px] rounded-full text-xs md:text-sm font-semibold transition-all ${
             mode === 'manual'
               ? 'text-primary border-2 border-primary bg-primary/10'
               : 'text-muted-foreground border-2 border-border bg-transparent hover:border-primary/30'

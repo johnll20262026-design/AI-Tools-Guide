@@ -1,4 +1,6 @@
-# 项目技术规范
+# AI工具指南
+
+面向中文用户的 AI 工具实战教程与落地指南。
 
 ## 技术栈
 
@@ -16,43 +18,21 @@
 
 ```
 src/
-├── index.tsx            # 入口（勿修改）
-├── app.tsx              # 路由配置（仅在 <Routes> 内增删 <Route>）
+├── index.tsx            # 入口
+├── app.tsx              # 路由配置
 ├── index.css            # 全局样式 + 主题变量
-├── components/          # 基础 UI 组件（禁止存放业务组件）
-│   ├── layout.tsx       # 全局布局容器（含 <Outlet />）
-│   └── ui/              # shadcn/ui 内置组件（勿修改）
+├── components/          # 基础 UI 与业务组件
+│   ├── layout.tsx       # 全局布局容器
+│   └── ui/              # shadcn/ui 内置组件
 ├── pages/               # 页面模块（每个页面一个目录）
-│   ├── <PageName>/      # 页面目录示例
-│   │   ├── PageName.tsx        # 页面入口文件与目录同名
-│   │   └── components/         # 页面专属组件
+│   ├── <PageName>/
+│   │   ├── PageName.tsx
+│   │   └── components/
 │   └── NotFoundPage/
 │       └── NotFoundPage.tsx
 ├── hooks/               # 自定义 Hooks
 └── lib/                 # 工具函数（cn() 等）
-
-shared/
-└── static/              # 静态资源
-    ├── data/            # 数据文件（JSON）
-    └── images/          # 图片资源
 ```
-
----
-
-## 模板初始状态
-
-- `app.tsx` 首页路由指向平台内置的 `<Welcome />` 组件
-- 开发时需将 `index` 路由替换为业务首页，并在 `pages/` 下创建对应页面目录
-- `layout.tsx` 为空壳容器（仅 `<Outlet />`），需根据需求实现导航和布局
-
----
-
-## 禁止修改的文件
-
-| 文件 | 原因 |
-|------|------|
-| `src/index.tsx` | Provider 层级 + 样式引入，由模板管理 |
-| `src/components/ui/*` | shadcn/ui 内置组件，版本锁定 |
 
 ---
 
@@ -64,8 +44,7 @@ shared/
 | 页面专属组件 | `src/pages/<PageName>/components/` |
 | 自定义 Hooks | `src/hooks/` |
 | 工具函数 | `src/lib/` |
-| 静态数据文件 | `shared/static/data/` |
-| 静态图片 | `shared/static/images/` |
+| 固定 URL 的公开静态资源 | `public/` |
 
 ---
 
@@ -75,10 +54,6 @@ shared/
 // @/ 别名 → src/
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-
-// @shared/ 别名 → shared/
-import heroImage from "@shared/static/images/hero.png";
-import configData from "@shared/static/config.json";
 ```
 
 ---
@@ -86,7 +61,22 @@ import configData from "@shared/static/config.json";
 ## 路由配置
 
 - 新增页面需在 `src/app.tsx` 的 `<Routes>` 内注册 `<Route>`
-- `BrowserRouter` 已在 `index.tsx` 中配置，`app.tsx` 中**禁止**再包裹 Router
+- `BrowserRouter` 已在 `index.tsx` 中配置，`app.tsx` 中不要再包裹 Router
+
+---
+
+## 本地开发
+
+```bash
+npm install
+npm run dev
+```
+
+## 构建（Cloudflare Pages）
+
+```bash
+npm run build:cf
+```
 
 ---
 
@@ -105,5 +95,3 @@ import configData from "@shared/static/config.json";
 | 边框 | `border-border` | `--border` |
 | 危险色 | `text-destructive` | `--destructive` |
 | 图表色 | `bg-chart-1` ~ `bg-chart-5` | `--chart-1` ~ `--chart-5` |
-
-HSL 格式使用**空格分隔**：`--primary: hsl(150 60% 40%);`

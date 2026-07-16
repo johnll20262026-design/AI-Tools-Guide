@@ -1,69 +1,78 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+
+function isNavigableHref(href: string | null): boolean {
+  if (!href) return false;
+  if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) {
+    return false;
+  }
+  return true;
+}
+
+function isModifiedClick(e: MouseEvent | TouchEvent): boolean {
+  if ('metaKey' in e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return true;
+  return false;
+}
 
 export default function RouteLoadingIndicator() {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startLoading = () => {
+    setLoading(true);
+    setProgress(15);
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    intervalRef.current = setInterval(() => {
+      setProgress(prev => {
+        if (prev < 70) return prev + Math.random() * 12;
+        if (prev < 85) return prev + Math.random() * 4;
+        return prev;
+      });
+    }, 150);
+  };
 
   useEffect(() => {
-    const startLoading = () => {
-      setLoading(true);
-      setProgress(15);
+    const handlePointer = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target) return;
 
-      if ((window as any).__routeLoadingInterval) {
-        clearInterval((window as any).__routeLoadingInterval);
+      // 处理 <a> 链接
+      const link = target.closest('a');
+      if (link) {
+        if (link.target === '_blank') return;
+        const href = link.getAttribute('href');
+        if (!isNavigableHref(href)) return;
+        if (isModifiedClick(e)) return;
+        startLoading();
+        return;
       }
 
-      const interval = setInterval(() => {
-        setProgress(prev => {
-          if (prev < 70) return prev + Math.random() * 12;
-          if (prev < 85) return prev + Math.random() * 4;
-          return prev;
-        });
-      }, 150);
-
-      (window as any).__routeLoadingInterval = interval;
+      // 处理通过 button 触发的路由跳转（data-route-link 标记）
+      const button = target.closest<HTMLElement>('button[data-route-link], [role="button"][data-route-link]');
+      if (button) {
+        startLoading();
+      }
     };
 
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const link = target.closest('a');
-      if (!link) return;
+    document.addEventListener('click', handlePointer, true);
+    document.addEventListener('touchstart', handlePointer, { passive: true, capture: true });
 
-      const href = link.getAttribute('href');
-      if (!href) return;
-      if (link.target === '_blank') return;
-      if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-
-      startLoading();
-    };
-
-    const handleTouchStart = (e: TouchEvent) => {
-      const target = e.target as HTMLElement;
-      const link = target.closest('a');
-      if (!link) return;
-
-      const href = link.getAttribute('href');
-      if (!href) return;
-      if (link.target === '_blank') return;
-      if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
-
-      startLoading();
-    };
-
-    document.addEventListener('click', handleClick, true);
-    document.addEventListener('touchstart', handleTouchStart, { passive: true, capture: true });
     return () => {
-      document.removeEventListener('click', handleClick, true);
-      document.removeEventListener('touchstart', handleTouchStart, true);
+      document.removeEventListener('click', handlePointer, true);
+      document.removeEventListener('touchstart', handlePointer, true);
     };
   }, []);
 
   useEffect(() => {
-    if ((window as any).__routeLoadingInterval) {
-      clearInterval((window as any).__routeLoadingInterval);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
 
     setProgress(100);

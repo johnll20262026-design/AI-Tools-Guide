@@ -1,6 +1,11 @@
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
+const HERO_BUTTONS = [
+  { label: '浏览 AI 教程分类', href: '#categories' },
+  { label: '选择学习路径', href: '#paths' },
+  { label: '查看实战案例', href: '#cases' },
+];
 
 export default function HeroSection() {
   return (
@@ -66,38 +71,15 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3"
         >
-          <Button
-            variant="secondary"
-            size="lg"
-            className="h-12 px-8 rounded-full text-base font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-            onClick={() => {
-              document.getElementById('categories')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-          >
-            浏览 AI 教程分类
-          </Button>
-
-          <Button
-            variant="secondary"
-            size="lg"
-            className="h-12 px-8 rounded-full text-base font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-            onClick={() => {
-              document.getElementById('paths')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-          >
-            选择学习路径
-          </Button>
-
-          <Button
-            variant="secondary"
-            size="lg"
-            className="h-12 px-8 rounded-full text-base font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-            onClick={() => {
-              document.getElementById('cases')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-          >
-            查看实战案例
-          </Button>
+          {HERO_BUTTONS.map(({ label, href }) => (
+            <a
+              key={href}
+              href={href}
+              className="inline-flex items-center justify-center h-12 px-8 rounded-full text-base font-semibold bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+            >
+              {label}
+            </a>
+          ))}
         </motion.div>
       </div>
     </section>

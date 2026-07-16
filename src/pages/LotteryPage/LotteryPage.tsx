@@ -299,22 +299,13 @@ function drawWheel(ctx: CanvasRenderingContext2D, size: number, rotation: number
 
     ctx.font = `900 ${fontSize}px "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif`;
 
-    // 非常轻微的暗色描边让文字边缘更锐利清晰
-    ctx.strokeStyle = 'rgba(0,0,0,0.12)';
-    ctx.lineWidth = 1.2;
-    ctx.lineJoin = 'round';
-    ctx.miterLimit = 2;
-
-    // 纯白色填充
+    // 纯白色填充，无描边
     ctx.fillStyle = '#ffffff';
 
     if (lines.length === 1) {
-      ctx.strokeText(lines[0], 0, 0);
       ctx.fillText(lines[0], 0, 0);
     } else {
-      ctx.strokeText(lines[0], 0, -fontSize * 0.65);
       ctx.fillText(lines[0], 0, -fontSize * 0.65);
-      ctx.strokeText(lines[1], 0, fontSize * 0.65);
       ctx.fillText(lines[1], 0, fontSize * 0.65);
     }
 
@@ -618,17 +609,6 @@ export default function LotteryPage() {
         {/* 转盘区域 */}
         <div className="flex flex-col items-center">
           <div className="relative inline-block">
-            {/* 投影 */}
-            <div
-              className="absolute rounded-full"
-              style={{
-                width: canvasSize + 16, height: canvasSize + 16,
-                left: -8, top: 10,
-                background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.03) 40%, transparent 70%)',
-                filter: 'blur(6px)',
-              }}
-            />
-
             <canvas
               ref={canvasRef}
               width={canvasSize}
@@ -661,9 +641,6 @@ export default function LotteryPage() {
                       <stop offset="60%" stopColor="rgba(255,255,255,0.05)" />
                       <stop offset="100%" stopColor="rgba(255,255,255,0)" />
                     </radialGradient>
-                    <filter id="goShadow" x="-20%" y="-20%" width="140%" height="140%">
-                      <feDropShadow dx="0" dy="1.5" stdDeviation="1" floodColor="#047857" floodOpacity="0.5" />
-                    </filter>
                   </defs>
 
                   {/* 水滴主体：单一 path 同时 fill 渐变 + stroke 浅绿环，无缝 */}
@@ -701,7 +678,6 @@ export default function LotteryPage() {
                     fontWeight="900"
                     fontFamily='-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif'
                     letterSpacing="2"
-                    filter="url(#goShadow)"
                   >
                     GO
                   </text>
@@ -906,7 +882,7 @@ export default function LotteryPage() {
             </div>
           )}
           <DialogFooter className="flex-col sm:flex-col gap-2 mt-2">
-            <Button className="w-full" onClick={() => setShowDialog(false)}>我已截图，去关注</Button>
+            <Button variant="outline" className="w-full" onClick={() => setShowDialog(false)}>我已截图，去关注</Button>
             <Button variant="outline" className="w-full" onClick={() => setShowDialog(false)}>稍后领取</Button>
           </DialogFooter>
         </DialogContent>

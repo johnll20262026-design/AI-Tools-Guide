@@ -88,7 +88,7 @@ export default memo(function CategoriesSection() {
                         <Link
                           key={article.id}
                           to={`/article/${article.id}`}
-                          className="group/link relative z-10 flex items-start gap-2 rounded-md px-3 py-3 -mx-3 md:px-2 md:py-1.5 md:-mx-2 hover:bg-muted/50 active:bg-muted/70 transition-colors duration-150"
+                          className="group/link relative z-10 flex items-start gap-2 rounded-md px-3 py-3 -mx-3 md:px-2.5 md:py-2 md:-mx-2.5 hover:bg-muted/50 active:bg-muted/70 transition-colors duration-150 min-h-[44px]"
                         >
                           <ArrowRight className="size-3.5 shrink-0 mt-0.5 text-muted-foreground/40 group-hover/link:text-primary transition-colors" />
                           <div className="min-w-0 flex-1">

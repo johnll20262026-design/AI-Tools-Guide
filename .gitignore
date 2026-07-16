@@ -62,3 +62,8 @@ pnpm-lock.yaml
 
 # Agent files
 .agent/
+.agents/
+
+# Legacy platform files
+.spark/
+.spark_project
