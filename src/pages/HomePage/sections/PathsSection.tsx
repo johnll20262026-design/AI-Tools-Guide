@@ -75,7 +75,7 @@ function PathsSection() {
                         <li key={step.step}>
                           <Link
                             to={`/article/${articleId}`}
-                            className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted hover:border-primary/30 border border-transparent transition-all duration-200 group/step"
+                            className="relative z-10 flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted hover:border-primary/30 active:bg-muted/70 border border-transparent transition-all duration-150 group/step"
                           >
                             {/* 步骤序号 */}
                             <span className="flex items-center justify-center size-7 rounded-full bg-primary/15 text-xs font-bold text-primary shrink-0 mt-0.5 group-hover/step:bg-primary group-hover/step:text-primary-foreground transition-colors">

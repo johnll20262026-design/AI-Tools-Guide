@@ -83,16 +83,16 @@ export default memo(function CategoriesSection() {
                     </p>
 
                     {/* 文章标题列表 */}
-                    <div className="mt-1 pt-3 border-t border-border/40 space-y-2">
+                    <div className="mt-1 pt-3 border-t border-border/40 space-y-1">
                       {articles.slice(0, 5).map((article) => (
                         <Link
                           key={article.id}
                           to={`/article/${article.id}`}
-                          className="group/link flex items-start gap-2 rounded-md px-2 py-1.5 -mx-2 hover:bg-muted/50 transition-colors duration-200"
+                          className="group/link relative z-10 flex items-start gap-2 rounded-md px-3 py-3 -mx-3 md:px-2 md:py-1.5 md:-mx-2 hover:bg-muted/50 active:bg-muted/70 transition-colors duration-150"
                         >
                           <ArrowRight className="size-3.5 shrink-0 mt-0.5 text-muted-foreground/40 group-hover/link:text-primary transition-colors" />
                           <div className="min-w-0 flex-1">
-                            <h4 className="text-sm font-medium text-foreground group-hover/link:text-primary transition-colors leading-snug line-clamp-1">
+                            <h4 className="text-sm font-medium text-foreground group-hover/link:text-primary transition-colors leading-snug line-clamp-2 md:line-clamp-1">
                               {article.title}
                             </h4>
                             <div className="mt-1 flex items-center gap-3 text-[10px] text-muted-foreground/60">

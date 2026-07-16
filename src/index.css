@@ -16,14 +16,24 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
   touch-action: manipulation;
 }
 
 a, button, [role="button"] {
   touch-action: manipulation;
+  cursor: pointer;
 }
 
 a {
   -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  a, button, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 

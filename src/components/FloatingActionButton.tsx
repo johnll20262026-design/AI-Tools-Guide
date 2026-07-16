@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MessageSquare, MessageCircle, X, Diamond, QrCode, ArrowRight, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -17,8 +17,14 @@ type DialogType = 'member' | 'feedback' | 'donate' | null;
 
 export default function FloatingActionButton() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dialogType, setDialogType] = useState<DialogType>(null);
+
+  useEffect(() => {
+    setMenuOpen(false);
+    setDialogType(null);
+  }, [location.pathname]);
 
   const closeDialog = () => {
     setDialogType(null);

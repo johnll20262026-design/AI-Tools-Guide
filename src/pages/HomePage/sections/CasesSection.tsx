@@ -161,7 +161,7 @@ function CaseCard({ item, index }: { item: ICaseItem; index: number }) {
                   <li key={step.step}>
                     <Link
                       to={`/article/${articleId}`}
-                      className="flex items-center gap-2.5 p-2.5 rounded-lg bg-muted/40 hover:bg-muted hover:border-primary/30 border border-transparent transition-all duration-200 group/step"
+                      className="relative z-10 flex items-center gap-2.5 p-3 rounded-lg bg-muted/40 hover:bg-muted hover:border-primary/30 active:bg-muted/70 border border-transparent transition-all duration-150 group/step"
                     >
                       <span className="flex items-center justify-center size-6 rounded-full bg-primary text-primary-foreground text-[10px] font-bold shrink-0">
                         {step.step}
