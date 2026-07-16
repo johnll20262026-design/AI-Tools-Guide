@@ -12,6 +12,8 @@ const sourceHtml = readFileSync(sourceIndexPath, 'utf-8');
 const assetScripts = [...builtHtml.matchAll(/<script type="module"[^>]*crossorigin[^>]*src="[^"]+"[^>]*><\/script>/g)].map(m => m[0]);
 const assetLinks = [...builtHtml.matchAll(/<link[^>]*rel="(?:stylesheet|modulepreload)"[^>]*>/g)].map(m => m[0]);
 const preloadLinks = [...sourceHtml.matchAll(/<link[^>]*rel="preload"[^>]*>/g)].map(m => m[0]);
+const preconnectLinks = [...sourceHtml.matchAll(/<link[^>]*rel="(?:preconnect|dns-prefetch)"[^>]*>/g)].map(m => m[0]);
+const extraMeta = [...sourceHtml.matchAll(/<meta[^>]+(?:theme-color|color-scheme)[^>]*>/g)].map(m => m[0]);
 const polyfillScript = builtHtml.includes('assets/polyfills.js') 
   ? builtHtml.match(/<script>\(function\(\)\{[\s\S]*?polyfills\.js[\s\S]*?\}\)\(\);<\/script>/)?.[0] || ''
   : '';
@@ -21,6 +23,7 @@ const cleanHead = `
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    ${extraMeta.join('\n    ')}
     <title>AI工具指南 - 面向中文用户的AI工具实战教程与落地指南</title>
     <meta name="description" content="面向中文用户的AI工具实战教程与落地指南，提供系统化的AI工具学习路径，涵盖Prompt工程、AI绘画、AI视频、AI编程、AI办公、AI Agent、模型部署、AI安全等核心领域，配套免费在线工具。" />
     <meta name="keywords" content="AI工具教程,Prompt工程,AI绘画,AI视频,AI编程,AI办公,AI Agent,模型部署,AI安全,人工智能学习,中文AI教程,AI实战指南,Cursor,Midjourney,Stable Diffusion,LangChain,口袋调音器" />
@@ -35,6 +38,7 @@ const cleanHead = `
     <meta name="twitter:title" content="AI工具指南 - 面向中文用户的AI工具实战教程与落地指南" />
     <meta name="twitter:description" content="面向中文用户的AI工具实战教程与落地指南，提供系统化的AI工具学习路径，配套免费在线工具。" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
+    ${preconnectLinks.join('\n    ')}
     ${preloadLinks.join('\n    ')}
     ${polyfillScript}
     ${assetLinks.join('\n    ')}

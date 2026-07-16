@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Diamond } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { prefetchRoute, prefetchOnHover } from '@/lib/prefetch';
 
 const CATEGORY_ITEMS = [
   { label: 'Prompt 工程', anchorId: 'category-prompt' },
@@ -70,15 +71,18 @@ interface DropdownItemProps {
   label: string;
   onClick: () => void;
   routeLink?: boolean;
+  prefetchTo?: string;
 }
 
-function DropdownItem({ label, onClick, routeLink }: DropdownItemProps) {
+function DropdownItem({ label, onClick, routeLink, prefetchTo }: DropdownItemProps) {
+  const prefetchHandlers = prefetchTo ? prefetchOnHover(() => prefetchRoute(prefetchTo)) : {};
   return (
     <button
       type="button"
       onClick={onClick}
       data-route-link={routeLink ? '' : undefined}
       className="w-full text-left px-4 py-2.5 min-h-[44px] text-sm text-foreground hover:text-primary hover:bg-muted/50 transition-colors duration-150 cursor-pointer whitespace-nowrap flex items-center"
+      {...prefetchHandlers}
     >
       {label}
     </button>
@@ -166,6 +170,7 @@ export default function Header() {
                   key={item.label}
                   label={item.label}
                   routeLink
+                  prefetchTo={item.to}
                   onClick={() => navigateTo(item.to)}
                 />
               ) : (
@@ -237,6 +242,7 @@ export default function Header() {
                   ? 'bg-primary text-white'
                   : 'bg-gradient-to-r from-primary to-teal-500 text-white hover:from-primary/90 hover:to-teal-500/90'
               }`}
+              {...prefetchOnHover(() => prefetchRoute('/membership'))}
             >
               <Diamond className="size-3.5" />
               AI资讯会员
@@ -280,6 +286,7 @@ export default function Header() {
                         onClick={() => navigateTo(item.to)}
                         data-route-link
                         className="w-full text-left px-3 py-2 min-h-[44px] rounded-md text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors flex items-center"
+                        {...prefetchOnHover(() => prefetchRoute(item.to))}
                       >
                         {item.label}
                       </button>
@@ -391,6 +398,7 @@ export default function Header() {
               to="/membership"
               onClick={closeMobile}
               className="mt-2 w-full flex items-center justify-center gap-1.5 px-3 py-2.5 min-h-[44px] rounded-lg text-sm font-semibold bg-primary text-white hover:bg-primary/90 transition-colors"
+              {...prefetchOnHover(() => prefetchRoute('/membership'))}
             >
               <Diamond className="size-3.5" />
               AI资讯会员

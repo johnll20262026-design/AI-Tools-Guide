@@ -1,7 +1,7 @@
 import type { IArticle } from '@/types/tutorial';
 import { ALL_ARTICLES_META } from '@/data/articles-meta';
 
-const articleImportMap = import.meta.glob<IArticle>('./*.ts');
+const articleImportMap = import.meta.glob<{ default: IArticle }>('./*.ts');
 
 export async function loadArticle(id: string): Promise<IArticle | null> {
   const meta = ALL_ARTICLES_META[id];
@@ -10,9 +10,9 @@ export async function loadArticle(id: string): Promise<IArticle | null> {
   if (!loader) return null;
   try {
     const mod = await loader();
-    const content = mod && typeof mod === 'object' && 'content' in mod
-      ? (mod as IArticle).content ?? ''
-      : '';
+    const article = mod?.default;
+    if (!article) return { ...meta, content: '' };
+    const content = article.content ?? '';
     return { ...meta, content };
   } catch {
     return null;

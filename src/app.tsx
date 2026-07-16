@@ -1,7 +1,9 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import RouteLoadingIndicator from "@/components/RouteLoadingIndicator";
+import LinkPrefetcher from "@/components/LinkPrefetcher";
+import { scheduleInitialPrefetch } from "@/lib/prefetch";
 import HomePage from "@/pages/HomePage/HomePage";
 
 const ArticleDetailPage = lazy(() => import("@/pages/ArticleDetailPage/ArticleDetailPage"));
@@ -24,10 +26,19 @@ function PageLoader() {
   );
 }
 
+function InitialPrefetch() {
+  useEffect(() => {
+    scheduleInitialPrefetch();
+  }, []);
+  return null;
+}
+
 export default function App() {
   return (
     <>
       <RouteLoadingIndicator />
+      <LinkPrefetcher />
+      <InitialPrefetch />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route element={<Layout />}>

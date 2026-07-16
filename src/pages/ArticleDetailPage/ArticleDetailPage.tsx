@@ -207,18 +207,20 @@ export default function ArticleDetailPage() {
     );
   }
 
-  if (!article) {
+  if (!article || !article.content || article.content.trim().length < 50) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <SEO title="文章即将上线" description="这篇文章正在精心编写中，敬请期待" />
+        <SEO title={article ? `${article.title} - 即将上线` : '文章即将上线'} description="这篇文章正在精心编写中，敬请期待" />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="max-w-md mx-auto px-4 text-center space-y-5">
             <div className="size-16 mx-auto rounded-2xl bg-muted flex items-center justify-center">
               <Clock className="size-8 text-muted-foreground/40" />
             </div>
             <div>
-              <p className="text-lg font-bold text-foreground">文章即将上线</p>
+              <p className="text-lg font-bold text-foreground">
+                {article ? article.title : '文章即将上线'}
+              </p>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
                 这篇文章的内容正在精心编写中，很快就会与大家见面。请先浏览其他已发布的文章。
               </p>

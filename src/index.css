@@ -69,3 +69,27 @@ table {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+/* 性能优化：首屏以下区块延迟渲染 */
+main > section + section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 600px;
+}
+
+/* 减少动画：尊重用户系统偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* GPU加速提示：动画元素使用独立合成层 */
+[class*="animate-"],
+[data-motion] {
+  will-change: transform, opacity;
+}
