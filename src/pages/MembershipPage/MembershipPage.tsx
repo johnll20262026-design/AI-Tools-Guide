@@ -17,10 +17,10 @@ export default function MembershipPage() {
     <div className="min-h-screen bg-background">
       <SEO title="AI资讯会员" description="加入AI Tools Guide会员，获取每日AI资讯早报、精选行业动态、深度工具测评。早鸟特惠限前10名，基础版¥69/月，定制版¥199/月。" />
       <Header />
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-12">
         {/* 返回导航 */}
-        <div className="flex items-center gap-4 mb-8">
-          <Button variant="ghost" size="sm" asChild>
+        <div className="flex items-center gap-2 md:gap-4 mb-6 md:mb-8 flex-wrap">
+          <Button variant="ghost" size="sm" asChild className="h-9 px-3 text-xs md:text-sm">
             <NavLink to="/" className="gap-1.5">
               <Home className="size-4" />
               返回首页
@@ -29,27 +29,27 @@ export default function MembershipPage() {
         </div>
 
         {/* 顶部早鸟特惠提示条 */}
-        <div className="mb-8 p-4 md:p-5 rounded-xl bg-gradient-to-r from-primary/20 via-teal-500/20 to-emerald-500/20 border border-primary/40 flex items-center justify-center gap-3 animate-pulse">
-          <Clock className="size-5 text-primary shrink-0" />
-          <p className="text-sm md:text-base font-medium text-foreground">
+        <div className="mb-6 md:mb-8 p-3 md:p-5 rounded-xl bg-gradient-to-r from-primary/20 via-teal-500/20 to-emerald-500/20 border border-primary/40 flex items-center justify-center gap-2 md:gap-3 animate-pulse">
+          <Clock className="size-4 md:size-5 text-primary shrink-0" />
+          <p className="text-xs md:text-base font-medium text-foreground text-center leading-relaxed">
             <span className="text-primary font-bold">🔥 早鸟特惠进行中</span>
-            <span className="text-muted-foreground mx-2">|</span>
+            <span className="text-muted-foreground mx-1 md:mx-2">|</span>
             限前 <span className="text-primary font-bold">{MEMBERSHIP_EARLY_BIRD_LIMIT}</span> 名，抢完立即恢复原价
           </p>
         </div>
 
         {/* Hero 标题区 */}
-        <header className="text-center mb-12 md:mb-16">
-          <div className="inline-flex items-center gap-2 mb-4">
+        <header className="text-center mb-8 md:mb-12 lg:mb-16 px-2">
+          <div className="inline-flex items-center gap-2 mb-3 md:mb-4">
             <Sparkles className="size-5 text-primary" />
             <span className="text-xs font-bold tracking-widest text-primary uppercase">AI NEWS MEMBERSHIP</span>
             <Sparkles className="size-5 text-primary" />
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight mb-3 md:mb-4">
             AI 资讯会员
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            每天 5 分钟，掌握 AI 圈最新动态、赚钱案例、工具评测<br />
+          <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            每天 5 分钟，掌握 AI 圈最新动态、赚钱案例、工具评测<br className="hidden sm:block" />
             信息差直接拉满，比别人早一步发现机会
           </p>
         </header>

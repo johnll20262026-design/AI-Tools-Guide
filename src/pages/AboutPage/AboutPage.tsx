@@ -41,19 +41,19 @@ export default function AboutPage() {
         title="关于我们"
         description="AI Tools Guide 是面向中文用户的AI工具实战教程与落地指南，提供系统化的AI工具学习路径。"
       />
-      <div className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12">
-        <div className="flex items-center gap-3 mb-8">
-          <NavLink to="/" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+      <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-12">
+        <div className="flex items-center gap-2 md:gap-3 mb-6 md:mb-8 flex-wrap">
+          <NavLink to="/" className="inline-flex items-center gap-2 text-xs md:text-sm font-medium text-muted-foreground hover:text-primary transition-colors min-h-[44px] -ml-2 px-2">
             <ArrowLeft className="size-4" />
             返回首页
           </NavLink>
         </div>
 
-        <header className="mb-12 text-center md:text-left">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+        <header className="mb-8 md:mb-12 text-center md:text-left px-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight">
             关于 <span className="bg-gradient-to-r from-primary to-emerald-500 bg-clip-text text-transparent">AI Tools Guide</span>
           </h1>
-          <p className="mt-4 text-base text-muted-foreground leading-relaxed max-w-2xl">
+          <p className="mt-3 md:mt-4 text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl">
             面向中文用户的AI工具实战教程与落地指南
           </p>
         </header>
@@ -107,12 +107,12 @@ export default function AboutPage() {
           </section>
         </article>
 
-        <div className="mt-12 pt-6 border-t border-border flex items-center gap-3">
-          <Button variant="outline" onClick={() => window.history.back()} className="gap-2">
+        <div className="mt-8 md:mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+          <Button variant="outline" onClick={() => window.history.back()} className="gap-2 h-11">
             <ArrowLeft className="size-4" />
             返回上一页
           </Button>
-          <Button variant="outline" asChild className="gap-2">
+          <Button variant="outline" asChild className="gap-2 h-11">
             <NavLink to="/">
               <Home className="size-4" />
               返回首页

@@ -61,10 +61,10 @@ export default function ResourcesPage() {
     <div className="min-h-screen bg-background">
       <SEO title="免费资源" description="免费AI工具与实用小工具集合，包含在线吉他调音器等实用工具，持续更新中。" />
       <Header />
-      <div className="max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-12">
         {/* 返回导航 */}
-        <div className="flex items-center gap-4 mb-8">
-          <Button variant="ghost" size="sm" asChild>
+        <div className="flex items-center gap-2 md:gap-4 mb-6 md:mb-8 flex-wrap">
+          <Button variant="ghost" size="sm" asChild className="h-9 px-3 text-xs md:text-sm">
             <NavLink to="/" className="gap-1.5">
               <Home className="size-4" />
               返回首页
@@ -73,11 +73,11 @@ export default function ResourcesPage() {
         </div>
 
         {/* 页面标题 */}
-        <header className="text-center mb-12 md:mb-16">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
+        <header className="text-center mb-8 md:mb-12 lg:mb-16 px-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
             免费工具 & 资源中心
           </h1>
-          <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          <p className="mt-3 md:mt-4 text-sm md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
             精选实用 AI 工具和小工具，免费使用
           </p>
         </header>
@@ -129,7 +129,7 @@ export default function ResourcesPage() {
                 )}
 
                 {resource.action.type === 'qrcode' && (
-                  <div className="rounded-xl border border-border/60 bg-muted/30 p-6 text-center">
+                  <div className="rounded-xl border border-border/60 bg-muted/30 p-4 md:p-6 text-center">
                     <div className="flex justify-center mb-3">
                       <QrCodeImage
                         size="md"
@@ -143,7 +143,7 @@ export default function ResourcesPage() {
                     <p className="mt-1 text-xs text-primary font-medium">
                       ✅ 完全免费 · 无内购
                     </p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
+                    <p className="mt-0.5 text-xs text-muted-foreground px-2">
                       打开微信扫描上方二维码即可进入小程序
                     </p>
                   </div>

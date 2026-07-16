@@ -220,19 +220,21 @@ export default function GuitarTunerPage() {
     <div className="min-h-screen bg-background">
       <SEO title="在线吉他调音器" description="免费在线吉他调音器，支持标准调弦及特殊调弦，使用设备麦克风精准调音，无需下载安装。" />
       <Header />
-      <div className="max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-12">
         {/* 返回导航 */}
-        <div className="flex items-center gap-4 mb-8">
-          <Button variant="ghost" size="sm" asChild>
+        <div className="flex items-center gap-2 md:gap-4 mb-6 md:mb-8 flex-wrap">
+          <Button variant="ghost" size="sm" asChild className="h-9 px-3 text-xs md:text-sm">
             <NavLink to="/resources" className="gap-1.5">
               <ArrowLeft className="size-4" />
-              返回免费工具 & 资源中心
+              <span className="hidden sm:inline">返回免费工具 & 资源中心</span>
+              <span className="sm:hidden">返回</span>
             </NavLink>
           </Button>
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="ghost" size="sm" asChild className="h-9 px-3 text-xs md:text-sm">
             <NavLink to="/" className="gap-1.5">
               <Home className="size-4" />
-              返回首页
+              <span className="hidden sm:inline">返回首页</span>
+              <span className="sm:hidden">首页</span>
             </NavLink>
           </Button>
         </div>
@@ -240,12 +242,12 @@ export default function GuitarTunerPage() {
         {/* 调音器内容 */}
         <div className="flex flex-col items-center">
           {/* 标题 */}
-          <h1 className="text-xl md:text-2xl tracking-[0.15em] uppercase text-foreground/60 font-semibold mb-10">
+          <h1 className="text-lg md:text-2xl tracking-[0.1em] md:tracking-[0.15em] uppercase text-foreground/60 font-semibold mb-6 md:mb-10 text-center">
             Guitar Tuner · 吉他调音器
           </h1>
 
       {/* 音分表盘 */}
-      <div className="relative w-[340px] md:w-[400px] h-[200px] md:h-[220px] mb-8">
+      <div className="relative w-full max-w-[340px] md:max-w-[400px] h-[180px] md:h-[220px] mb-6 md:mb-8">
         <svg viewBox="0 0 280 160" className="w-full h-full">
           <defs>
             <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -350,11 +352,11 @@ export default function GuitarTunerPage() {
       </div>
 
       {/* 模式切换 */}
-      <div className="flex gap-3 mb-6">
+      <div className="flex gap-2 md:gap-3 mb-4 md:mb-6">
         <button
           type="button"
           onClick={() => toggleMode('auto')}
-          className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
+          className={`px-4 md:px-5 py-2 rounded-full text-xs md:text-sm font-semibold transition-all ${
             mode === 'auto'
               ? 'text-primary border-2 border-primary bg-primary/10'
               : 'text-muted-foreground border-2 border-border bg-transparent hover:border-primary/30'
@@ -365,7 +367,7 @@ export default function GuitarTunerPage() {
         <button
           type="button"
           onClick={() => toggleMode('manual')}
-          className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
+          className={`px-4 md:px-5 py-2 rounded-full text-xs md:text-sm font-semibold transition-all ${
             mode === 'manual'
               ? 'text-primary border-2 border-primary bg-primary/10'
               : 'text-muted-foreground border-2 border-border bg-transparent hover:border-primary/30'
@@ -375,10 +377,10 @@ export default function GuitarTunerPage() {
         </button>
       </div>
 
-      <div className="w-10 h-px bg-border mb-6" />
+      <div className="w-10 h-px bg-border mb-4 md:mb-6" />
 
       {/* 提示文字 */}
-      <p className="text-base text-muted-foreground mb-2 font-medium">
+      <p className="text-sm md:text-base text-muted-foreground mb-2 font-medium text-center px-4">
         {isListening ? '弹奏任意一根弦' : '点击琴弦按钮，开启麦克风调音'}
       </p>
 
@@ -396,7 +398,7 @@ export default function GuitarTunerPage() {
       )}
 
       {/* 弦选择按钮 — 入场动画 + 呼吸动画 */}
-      <div className="flex gap-3 mb-6">
+      <div className="flex gap-1.5 sm:gap-2 md:gap-3 mb-4 md:mb-6 w-full justify-center px-2">
         {STRINGS.map((s, idx) => (
           <motion.button
             key={s.name + s.number}
@@ -407,24 +409,24 @@ export default function GuitarTunerPage() {
             transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -4, scale: 1.05, boxShadow: '0 8px 24px rgba(22,156,123,0.12)' }}
             whileTap={{ scale: 0.92 }}
-            className={`w-16 h-20 md:w-18 md:h-22 rounded-xl flex flex-col items-center justify-center transition-colors ${
+            className={`w-11 h-14 sm:w-14 sm:h-18 md:w-16 md:h-20 rounded-lg md:rounded-xl flex flex-col items-center justify-center transition-colors flex-shrink-0 ${
               selectedString === idx
                 ? 'border-2 border-primary bg-primary/10 shadow-[0_0_16px_rgba(22_156_123_0.15)]'
                 : `border-2 border-border bg-card hover:border-primary/30 ${!hasStarted && !isListening ? 'animate-pulse' : ''}`
             }`}
           >
-            <span className={`text-xl md:text-2xl font-bold font-mono ${
+            <span className={`text-lg sm:text-xl md:text-2xl font-bold font-mono ${
               selectedString === idx ? 'text-primary' : 'text-foreground/70'
             }`}>
               {s.name}
             </span>
-            <span className="text-xs text-muted-foreground mt-1">{s.number}</span>
+            <span className="text-[10px] md:text-xs text-muted-foreground mt-0.5 md:mt-1">{s.number}</span>
           </motion.button>
         ))}
       </div>
 
       {/* 标准调弦提示 */}
-      <p className="text-sm text-muted-foreground mb-8 tracking-widest font-medium">
+      <p className="text-xs md:text-sm text-muted-foreground mb-6 md:mb-8 tracking-widest font-medium text-center">
         标准调弦 E · A · D · G · B · E
       </p>
 
@@ -496,10 +498,10 @@ export default function GuitarTunerPage() {
       )}
 
       {micError && (
-        <p className="mt-4 text-sm text-destructive font-medium max-w-xs text-center">{micError}</p>
+        <p className="mt-4 text-sm text-destructive font-medium max-w-xs text-center px-4">{micError}</p>
       )}
 
-      <p className="mt-10 text-xs text-muted-foreground max-w-xs text-center leading-relaxed">
+      <p className="mt-6 md:mt-10 text-xs text-muted-foreground max-w-xs text-center leading-relaxed px-4">
         请允许浏览器使用麦克风权限，将设备靠近吉他音孔，弹奏琴弦进行调音。
       </p>
         </div>

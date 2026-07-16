@@ -581,34 +581,36 @@ export default function LotteryPage() {
     <div className="min-h-screen bg-background">
       <SEO title="幸运抽奖" description="AI Tools Guide会员专属幸运抽奖活动，赢取会员时长、1对1咨询等奖品。" />
       <Header />
-      <div className="max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-12">
         {/* 返回导航 */}
-        <div className="flex items-center gap-4 mb-8">
-          <Button variant="ghost" size="sm" asChild>
+        <div className="flex items-center gap-2 md:gap-4 mb-6 md:mb-8 flex-wrap">
+          <Button variant="ghost" size="sm" asChild className="h-9 px-3 text-xs md:text-sm">
             <NavLink to="/resources" className="gap-1.5">
               <ArrowLeft className="size-4" />
-              返回免费工具 & 资源中心
+              <span className="hidden sm:inline">返回免费工具 & 资源中心</span>
+              <span className="sm:hidden">返回</span>
             </NavLink>
           </Button>
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="ghost" size="sm" asChild className="h-9 px-3 text-xs md:text-sm">
             <NavLink to="/" className="gap-1.5">
               <Home className="size-4" />
-              返回首页
+              <span className="hidden sm:inline">返回首页</span>
+              <span className="sm:hidden">首页</span>
             </NavLink>
           </Button>
         </div>
 
         {/* 页面标题 */}
-        <header className="text-center mb-10">
+        <header className="text-center mb-8 md:mb-10">
           <div className="inline-flex items-center gap-2 mb-3">
             <Sparkles className="size-5 text-primary" />
             <span className="text-xs font-bold tracking-widest text-primary uppercase">Lucky Draw</span>
             <Sparkles className="size-5 text-primary" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight px-2">
             幸运大转盘 · 100%中奖
           </h1>
-          <p className="mt-3 text-base text-muted-foreground">
+          <p className="mt-3 text-sm md:text-base text-muted-foreground px-4 leading-relaxed">
             每天抽1次，使用微信扫码进口袋调音器小程序额外获得1次抽奖机会（完全免费·无任何费用）
           </p>
         </header>

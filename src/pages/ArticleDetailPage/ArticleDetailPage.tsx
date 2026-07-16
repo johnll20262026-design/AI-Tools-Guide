@@ -182,12 +182,12 @@ export default function ArticleDetailPage() {
                 这篇文章的内容正在精心编写中，很快就会与大家见面。请先浏览其他已发布的文章。
               </p>
             </div>
-            <div className="flex items-center gap-3 justify-center">
-              <Button variant="outline" onClick={() => navigate(-1)} className="gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 justify-center">
+              <Button variant="outline" onClick={() => navigate(-1)} className="gap-2 h-11">
                 <ArrowLeft className="size-4" />
                 返回上一级
               </Button>
-              <Button variant="outline" onClick={() => navigate('/')} className="gap-2">
+              <Button variant="outline" onClick={() => navigate('/')} className="gap-2 h-11">
                 <Home className="size-4" />
                 返回首页
               </Button>
@@ -204,22 +204,22 @@ export default function ArticleDetailPage() {
       <ReadingProgressBar />
       <Header />
       <SEO title={article.title} description={article.description} />
-      <div className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-12">
         {/* 顶部导航按钮 */}
-        <div className="flex items-center gap-3 mb-8">
+        <div className="flex items-center gap-2 md:gap-3 mb-6 md:mb-8 flex-wrap -ml-2">
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            className="inline-flex items-center gap-2 text-xs md:text-sm font-medium text-muted-foreground hover:text-primary transition-colors min-h-[44px] px-2"
           >
             <ArrowLeft className="size-4" />
             返回上一级
           </button>
-          <span className="text-muted-foreground/30">|</span>
+          <span className="text-muted-foreground/30 hidden sm:inline">|</span>
           <button
             type="button"
             onClick={() => navigate('/')}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs md:text-sm font-medium text-muted-foreground hover:text-primary transition-colors min-h-[44px] px-2"
           >
             <Home className="size-3.5" />
             返回首页
@@ -227,18 +227,18 @@ export default function ArticleDetailPage() {
         </div>
 
         {/* 文章头部 */}
-        <header className="mb-8">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight tracking-tight">
+        <header className="mb-6 md:mb-8">
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight tracking-tight">
             {article.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 mt-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-3 md:mt-4 text-xs md:text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-1.5">
-              <Calendar className="size-4" />
+              <Calendar className="size-3.5 md:size-4" />
               {article.date}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Clock className="size-4" />
+              <Clock className="size-3.5 md:size-4" />
               {article.readTime}
             </span>
           </div>
@@ -410,11 +410,11 @@ export default function ArticleDetailPage() {
         )}
 
         {/* 底部操作按钮 */}
-        <div className="mt-8 pt-6 border-t border-border flex items-center gap-3">
+        <div className="mt-6 md:mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
           <Button
             variant="outline"
             onClick={() => navigate(-1)}
-            className="gap-2"
+            className="gap-2 h-11"
           >
             <ArrowLeft className="size-4" />
             返回上一级
@@ -422,7 +422,7 @@ export default function ArticleDetailPage() {
           <Button
             variant="outline"
             onClick={() => navigate('/')}
-            className="gap-2"
+            className="gap-2 h-11"
           >
             <Home className="size-4" />
             返回首页

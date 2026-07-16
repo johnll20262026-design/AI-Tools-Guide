@@ -18,22 +18,22 @@ export default function PrivacyPage() {
         title="隐私政策"
         description="AI工具指南隐私政策，说明我们如何收集、使用和保护您的个人信息。"
       />
-      <div className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12">
-        <div className="flex items-center gap-3 mb-8">
-          <NavLink to="/" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+      <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-12">
+        <div className="flex items-center gap-2 md:gap-3 mb-6 md:mb-8 flex-wrap">
+          <NavLink to="/" className="inline-flex items-center gap-2 text-xs md:text-sm font-medium text-muted-foreground hover:text-primary transition-colors min-h-[44px] -ml-2 px-2">
             <ArrowLeft className="size-4" />
             返回首页
           </NavLink>
         </div>
 
-        <header className="mb-10">
+        <header className="mb-8 md:mb-10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Shield className="size-6 text-primary" />
+            <div className="size-10 md:size-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+              <Shield className="size-5 md:size-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground">隐私政策</h1>
-              <p className="text-sm text-muted-foreground mt-1">最后更新：2026年7月1日</p>
+              <h1 className="text-xl md:text-3xl font-bold text-foreground">隐私政策</h1>
+              <p className="text-xs md:text-sm text-muted-foreground mt-1">最后更新：2026年7月1日</p>
             </div>
           </div>
         </header>
@@ -142,12 +142,12 @@ export default function PrivacyPage() {
           </section>
         </article>
 
-        <div className="mt-12 pt-6 border-t border-border flex items-center gap-3">
-          <Button variant="outline" onClick={() => window.history.back()} className="gap-2">
+        <div className="mt-8 md:mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+          <Button variant="outline" onClick={() => window.history.back()} className="gap-2 h-11">
             <ArrowLeft className="size-4" />
             返回上一页
           </Button>
-          <Button variant="outline" asChild className="gap-2">
+          <Button variant="outline" asChild className="gap-2 h-11">
             <NavLink to="/">
               <Home className="size-4" />
               返回首页
