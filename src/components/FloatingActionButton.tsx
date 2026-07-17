@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { MessageSquare, MessageCircle, X, Diamond, QrCode, ArrowRight, Heart } from 'lucide-react';
+import { X, Diamond, QrCode, ArrowRight, Heart, MessageCircle, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -129,14 +128,7 @@ export default function FloatingActionButton() {
           </div>
         )}
 
-        <motion.div
-          animate={{ scale: menuOpen ? 1 : [1, 1.05, 1] }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        >
+        <div>
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -149,7 +141,7 @@ export default function FloatingActionButton() {
               <MessageSquare className="size-6" />
             )}
           </button>
-        </motion.div>
+        </div>
       </div>
 
       <Dialog open={dialogType !== null} onOpenChange={(open) => !open && closeDialog()}>

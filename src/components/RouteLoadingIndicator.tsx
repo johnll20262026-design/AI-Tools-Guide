@@ -3,101 +3,115 @@ import { useLocation } from 'react-router-dom';
 
 function isNavigableHref(href: string | null): boolean {
   if (!href) return false;
-  if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) {
+  if (href.startsWith('#')) return false;
+  if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) {
     return false;
   }
   return true;
 }
 
-function isModifiedClick(e: MouseEvent | TouchEvent): boolean {
-  if ('metaKey' in e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return true;
+function isAnchorNavigation(el: HTMLElement): boolean {
+  const anchor = el.closest('a');
+  if (anchor) {
+    const href = anchor.getAttribute('href');
+    if (href && href.startsWith('#')) return true;
+    if (href && href.includes('#') && !href.startsWith('http')) {
+      const path = href.split('#')[0];
+      if (path === '' || path === window.location.pathname) return true;
+    }
+  }
+  return false;
+}
+
+function isModifiedClick(e: MouseEvent): boolean {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return true;
   return false;
 }
 
 export default function RouteLoadingIndicator() {
   const location = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const showTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const startLoading = () => {
-    setLoading(true);
-    setProgress(15);
+    setProgress(10);
 
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
+    if (showTimerRef.current) clearTimeout(showTimerRef.current);
+    showTimerRef.current = setTimeout(() => {
+      setVisible(true);
+    }, 200);
 
+    if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       setProgress(prev => {
-        if (prev < 70) return prev + Math.random() * 12;
-        if (prev < 85) return prev + Math.random() * 4;
+        if (prev < 70) return prev + Math.random() * 10;
+        if (prev < 85) return prev + Math.random() * 3;
         return prev;
       });
-    }, 150);
+    }, 200);
+  };
+
+  const stopLoading = () => {
+    if (showTimerRef.current) {
+      clearTimeout(showTimerRef.current);
+      showTimerRef.current = null;
+    }
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setProgress(100);
+    setTimeout(() => {
+      setVisible(false);
+      setProgress(0);
+    }, 200);
   };
 
   useEffect(() => {
-    const handlePointer = (e: MouseEvent | TouchEvent) => {
+    const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target) return;
 
-      // 处理 <a> 链接
+      if (isModifiedClick(e)) return;
+
+      if (isAnchorNavigation(target)) return;
+
       const link = target.closest('a');
       if (link) {
         if (link.target === '_blank') return;
         const href = link.getAttribute('href');
         if (!isNavigableHref(href)) return;
-        if (isModifiedClick(e)) return;
         startLoading();
         return;
       }
 
-      // 处理通过 button 触发的路由跳转（data-route-link 标记）
       const button = target.closest<HTMLElement>('button[data-route-link], [role="button"][data-route-link]');
       if (button) {
         startLoading();
       }
     };
 
-    document.addEventListener('click', handlePointer, true);
-    document.addEventListener('touchstart', handlePointer, { passive: true, capture: true });
-
-    return () => {
-      document.removeEventListener('click', handlePointer, true);
-      document.removeEventListener('touchstart', handlePointer, true);
-    };
+    document.addEventListener('click', handleClick, true);
+    return () => document.removeEventListener('click', handleClick, true);
   }, []);
 
   useEffect(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
+    stopLoading();
+  }, [location.pathname, location.search]);
 
-    setProgress(100);
-    const timer = setTimeout(() => {
-      setLoading(false);
-      setProgress(0);
-    }, 250);
-
-    return () => clearTimeout(timer);
-  }, [location.pathname]);
-
-  if (!loading) return null;
+  if (!visible) return null;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] pointer-events-none">
       <div
-        className="h-1.5 bg-gradient-to-r from-primary to-teal-400 shadow-lg shadow-primary/50"
+        className="h-1 bg-gradient-to-r from-primary to-teal-400 shadow-lg shadow-primary/50"
         style={{
           width: `${Math.min(progress, 100)}%`,
-          transition: 'width 0.15s ease-out',
+          transition: 'width 0.2s ease-out',
         }}
       />
-      <div className="sr-only" role="status" aria-live="polite">
-        页面加载中
-      </div>
     </div>
   );
 }

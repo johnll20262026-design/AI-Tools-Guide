@@ -18,6 +18,9 @@ const polyfillScript = builtHtml.includes('assets/polyfills.js')
   ? builtHtml.match(/<script>\(function\(\)\{[\s\S]*?polyfills\.js[\s\S]*?\}\)\(\);<\/script>/)?.[0] || ''
   : '';
 
+const bodyMatch = sourceHtml.match(/<body([^>]*)>/);
+const bodyAttrs = bodyMatch ? bodyMatch[1] : '';
+
 const cleanHead = `
   <head>
     <meta charset="UTF-8" />
@@ -48,7 +51,7 @@ const cleanHead = `
 const finalHtml = `<!doctype html>
 <html lang="zh-CN">
 ${cleanHead}
-  <body>
+  <body${bodyAttrs}>
     <div id="root"></div>
   </body>
 </html>`;
