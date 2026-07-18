@@ -26,6 +26,24 @@ export default function FloatingActionButton() {
     setDialogType(null);
   }, [location.pathname]);
 
+  useEffect(() => {
+    const preloadImages = () => {
+      const images = ['/qrcode.png', '/wechat.png', '/wechat-pay.png', '/alipay.png'];
+      images.forEach(src => {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.as = 'image';
+        link.href = src;
+        document.head.appendChild(link);
+      });
+    };
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(preloadImages, { timeout: 1500 });
+    } else {
+      setTimeout(preloadImages, 1000);
+    }
+  }, []);
+
   const closeDialog = () => {
     setDialogType(null);
   };
@@ -87,7 +105,7 @@ export default function FloatingActionButton() {
                 setMenuOpen(false);
                 navigate('/membership');
               }}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-primary/30 bg-card shadow-lg hover:border-primary hover:bg-primary/5 hover:shadow-xl transition-all text-left group"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-primary/30 bg-card shadow-lg hover:border-primary hover:bg-primary/5 hover:shadow-xl transition-all text-left group min-h-[44px]"
             >
               <div className="size-9 rounded-lg bg-primary flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                 <Diamond className="size-4 text-white" />
@@ -101,7 +119,7 @@ export default function FloatingActionButton() {
             <button
               type="button"
               onClick={() => openDialog('feedback')}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-card shadow-lg hover:border-primary/50 hover:bg-primary/5 hover:shadow-xl transition-all text-left group"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-card shadow-lg hover:border-primary/50 hover:bg-primary/5 hover:shadow-xl transition-all text-left group min-h-[44px]"
             >
               <div className="size-9 rounded-lg bg-primary flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                 <MessageCircle className="size-4 text-white" />
@@ -115,7 +133,7 @@ export default function FloatingActionButton() {
             <button
               type="button"
               onClick={() => openDialog('donate')}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-card shadow-lg hover:border-primary/50 hover:bg-primary/5 hover:shadow-xl transition-all text-left group"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-card shadow-lg hover:border-primary/50 hover:bg-primary/5 hover:shadow-xl transition-all text-left group min-h-[44px]"
             >
               <div className="size-9 rounded-lg bg-primary flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                 <Heart className="size-4 text-white fill-white" />
@@ -152,11 +170,11 @@ export default function FloatingActionButton() {
           {currentDialog && dialogType !== 'donate' && (
             <>
               <DialogHeader>
-                <DialogTitle className="text-xl flex items-center gap-2">
+                <DialogTitle className="text-xl flex items-center gap-2 text-foreground">
                   <QrCode className="size-5 text-primary" />
                   {currentDialog.title}
                 </DialogTitle>
-                <DialogDescription>
+                <DialogDescription className="text-muted-foreground">
                   {currentDialog.desc}
                 </DialogDescription>
               </DialogHeader>
@@ -186,7 +204,7 @@ export default function FloatingActionButton() {
                   </p>
                 </div>
                 <div className="mt-6 flex justify-center">
-                  <Button variant="outline" onClick={closeDialog} className="gap-2">
+                  <Button variant="default" onClick={closeDialog} className="gap-2 min-h-[44px] px-6">
                     我知道了
                     <ArrowRight className="size-4" />
                   </Button>
@@ -198,11 +216,11 @@ export default function FloatingActionButton() {
           {currentDialog && dialogType === 'donate' && (
             <>
               <DialogHeader>
-                <DialogTitle className="text-xl flex items-center gap-2">
+                <DialogTitle className="text-xl flex items-center gap-2 text-foreground">
                   <Heart className="size-5 text-primary fill-primary" />
                   {currentDialog.title}
                 </DialogTitle>
-                <DialogDescription>
+                <DialogDescription className="text-muted-foreground">
                   {currentDialog.desc}
                 </DialogDescription>
               </DialogHeader>
@@ -243,17 +261,17 @@ export default function FloatingActionButton() {
 
                 <div className="flex flex-col gap-2">
                   <Button
-                    variant="outline"
+                    variant="secondary"
                     onClick={() => {
                       closeDialog();
                       setTimeout(() => openDialog('feedback'), 100);
                     }}
-                    className="gap-2 w-full"
+                    className="gap-2 w-full min-h-[44px]"
                   >
                     <MessageCircle className="size-4" />
                     意见反馈
                   </Button>
-                  <Button variant="outline" onClick={closeDialog} className="gap-2 w-full">
+                  <Button variant="default" onClick={closeDialog} className="gap-2 w-full min-h-[44px]">
                     我知道了
                     <ArrowRight className="size-4" />
                   </Button>

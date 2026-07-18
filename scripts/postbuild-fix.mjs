@@ -12,6 +12,7 @@ const sourceHtml = readFileSync(sourceIndexPath, 'utf-8');
 const assetScripts = [...builtHtml.matchAll(/<script type="module"[^>]*crossorigin[^>]*src="[^"]+"[^>]*><\/script>/g)].map(m => m[0]);
 const assetLinks = [...builtHtml.matchAll(/<link[^>]*rel="(?:stylesheet|modulepreload)"[^>]*>/g)].map(m => m[0]);
 const preloadLinks = [...sourceHtml.matchAll(/<link[^>]*rel="preload"[^>]*>/g)].map(m => m[0]);
+const prefetchLinks = [...sourceHtml.matchAll(/<link[^>]*rel="prefetch"[^>]*>/g)].map(m => m[0]);
 const preconnectLinks = [...sourceHtml.matchAll(/<link[^>]*rel="(?:preconnect|dns-prefetch)"[^>]*>/g)].map(m => m[0]);
 const extraMeta = [...sourceHtml.matchAll(/<meta[^>]+(?:theme-color|color-scheme)[^>]*>/g)].map(m => m[0]);
 const polyfillScript = builtHtml.includes('assets/polyfills.js') 
@@ -43,6 +44,7 @@ const cleanHead = `
     <link rel="apple-touch-icon" href="/favicon.svg" />
     ${preconnectLinks.join('\n    ')}
     ${preloadLinks.join('\n    ')}
+    ${prefetchLinks.join('\n    ')}
     ${polyfillScript}
     ${assetLinks.join('\n    ')}
     ${assetScripts.join('\n    ')}

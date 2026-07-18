@@ -28,16 +28,20 @@ function matchPrefetchKey(path: string): PrefetchKey | null {
   return null;
 }
 
-export function prefetchRoute(path: string): void {
+export function prefetchRoute(path: string, eager = false): void {
   const key = matchPrefetchKey(path);
   if (!key) return;
   if (prefetched.has(key)) return;
   prefetched.add(key);
   const importer = lazyImporters[key];
   if (importer) {
-    ric(() => {
+    if (eager) {
       importer().catch(() => {});
-    }, { timeout: 2000 });
+    } else {
+      ric(() => {
+        importer().catch(() => {});
+      }, { timeout: 1500 });
+    }
   }
 }
 
@@ -46,23 +50,34 @@ export function prefetchOnHover(
 ): {
   onMouseEnter: () => void;
   onTouchStart: () => void;
+  onPointerDown: () => void;
   onFocus: () => void;
 } {
   let done = false;
-  const trigger = () => {
+  const trigger = (eager = false) => {
     if (done) return;
     done = true;
     callback?.();
   };
   return {
-    onMouseEnter: trigger,
-    onTouchStart: trigger,
-    onFocus: trigger,
+    onMouseEnter: () => trigger(false),
+    onTouchStart: () => trigger(true),
+    onPointerDown: () => trigger(true),
+    onFocus: () => trigger(false),
   };
 }
 
 export function scheduleInitialPrefetch(): void {
+  const criticalRoutes = ['/membership', '/resources', '/about'];
+
   ric(() => {
-    prefetchRoute('/article/prompt-1');
-  }, { timeout: 3000 });
+    criticalRoutes.forEach((route, i) => {
+      setTimeout(() => prefetchRoute(route, false), i * 200);
+    });
+  }, { timeout: 2000 });
+
+  ric(() => {
+    prefetchRoute('/article/prompt-1', false);
+    prefetchRoute('/tuner', false);
+  }, { timeout: 5000 });
 }
