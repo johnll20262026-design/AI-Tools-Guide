@@ -70,16 +70,6 @@ table {
   -webkit-overflow-scrolling: touch;
 }
 
-/* 性能优化：首屏以下区块延迟渲染 - 给更精确的高度预估减少跳动 */
-main > section + section {
-  content-visibility: auto;
-}
-main > section:nth-of-type(2) { contain-intrinsic-size: 1px 500px; }
-main > section:nth-of-type(3) { contain-intrinsic-size: 1px 300px; }
-main > section:nth-of-type(4) { contain-intrinsic-size: 1px 500px; }
-main > section:nth-of-type(5) { contain-intrinsic-size: 1px 500px; }
-main > section:nth-of-type(6) { contain-intrinsic-size: 1px 350px; }
-
 /* 减少动画：尊重用户系统偏好 */
 @media (prefers-reduced-motion: reduce) {
   *,
