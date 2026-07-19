@@ -1,6 +1,5 @@
-import { memo, useState, useRef, useEffect } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { ArrowUpRight, ChevronRight, Code, Palette, Zap, Bot, Smartphone, Database, Clock, Calendar } from 'lucide-react';
 import type { ICaseItem } from '@/types/tutorial';
 import { ALL_ARTICLES_META } from '@/data/articles-meta';
@@ -9,150 +8,78 @@ interface CasesSectionProps {
   cases: ICaseItem[];
 }
 
-const CASE_IMAGES: Record<string, { src: string; srcSet: string }> = {
-  '1': {
-    src: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=800&h=450',
-    srcSet: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=400&h=225 400w, https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=800&h=450 800w, https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=1200&h=675 1200w',
-  },
-  '2': {
-    src: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800&h=450',
-    srcSet: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=400&h=225 400w, https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800&h=450 800w, https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1200&h=675 1200w',
-  },
-  '3': {
-    src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800&h=450',
-    srcSet: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=400&h=225 400w, https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800&h=450 800w, https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200&h=675 1200w',
-  },
-  '4': {
-    src: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800&h=450',
-    srcSet: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=400&h=225 400w, https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800&h=450 800w, https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200&h=675 1200w',
-  },
-  '5': {
-    src: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=800&h=450',
-    srcSet: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=400&h=225 400w, https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=800&h=450 800w, https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=1200&h=675 1200w',
-  },
-  '6': {
-    src: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800&h=450',
-    srcSet: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=400&h=225 400w, https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800&h=450 800w, https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1200&h=675 1200w',
-  },
-};
-
-interface ICaseStyle {
-  gradient: string;
-  iconColor: string;
-  glowColor: string;
-  icon: React.ReactNode;
-}
-
-const CASE_STYLES: Record<string, ICaseStyle> = {
+const CASE_STYLES: Record<string, { gradient: string; iconColor: string; icon: React.ReactNode }> = {
   '1': {
     gradient: 'from-[#0d1b2a] via-[#1b263b] to-[#0d1b2a]',
     iconColor: 'text-[#00d4aa]',
-    glowColor: 'bg-[#00d4aa]/20',
     icon: <Code className="size-20" strokeWidth={1} />,
   },
   '2': {
     gradient: 'from-[#1a0d20] via-[#2d1b3a] to-[#1a0d20]',
     iconColor: 'text-[#ff6b9d]',
-    glowColor: 'bg-[#ff6b9d]/20',
     icon: <Palette className="size-20" strokeWidth={1} />,
   },
   '3': {
     gradient: 'from-[#0a1628] via-[#152a45] to-[#0a1628]',
     iconColor: 'text-[#4dabf7]',
-    glowColor: 'bg-[#4dabf7]/20',
     icon: <Zap className="size-20" strokeWidth={1} />,
   },
   '4': {
     gradient: 'from-[#150d20] via-[#251838] to-[#150d20]',
     iconColor: 'text-[#b197fc]',
-    glowColor: 'bg-[#b197fc]/20',
     icon: <Bot className="size-20" strokeWidth={1} />,
   },
   '5': {
     gradient: 'from-[#200d15] via-[#3a1825] to-[#200d15]',
     iconColor: 'text-[#ff8787]',
-    glowColor: 'bg-[#ff8787]/20',
     icon: <Smartphone className="size-20" strokeWidth={1} />,
   },
   '6': {
     gradient: 'from-[#0d1a15] via-[#152e24] to-[#0d1a15]',
     iconColor: 'text-[#20c997]',
-    glowColor: 'bg-[#20c997]/20',
     icon: <Database className="size-20" strokeWidth={1} />,
   },
 };
 
-function CaseCard({ item, index }: { item: ICaseItem; index: number }) {
+const CASE_IMAGES: Record<string, string> = {
+  '1': 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=800&h=450',
+  '2': 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800&h=450',
+  '3': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800&h=450',
+  '4': 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800&h=450',
+  '5': 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=800&h=450',
+  '6': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800&h=450',
+};
+
+function CaseCard({ item }: { item: ICaseItem }) {
   const style = CASE_STYLES[item.id] ?? CASE_STYLES['1'];
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const [imgError, setImgError] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
-  const imgData = CASE_IMAGES[item.id] ?? CASE_IMAGES['1'];
-
-  useEffect(() => {
-    setImgLoaded(false);
-    setImgError(false);
-    const checkImg = () => {
-      const img = imgRef.current;
-      if (img && img.complete && img.naturalWidth > 0) {
-        setImgLoaded(true);
-      }
-    };
-    checkImg();
-    const t1 = setTimeout(checkImg, 100);
-    const t2 = setTimeout(checkImg, 500);
-    const fallback = setTimeout(() => setImgLoaded(true), 3000);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(fallback); };
-  }, [imgData.src]);
-
-  const showPlaceholder = !imgLoaded;
+  const imgSrc = CASE_IMAGES[item.id] ?? CASE_IMAGES['1'];
 
   return (
-    <motion.div
-      id={`case-${item.id}`}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-    >
+    <div id={`case-${item.id}`}>
       <article className="overflow-hidden rounded-xl border border-border bg-card shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 h-full flex flex-col group">
-        {/* 封面区 */}
         <div className={`relative aspect-video overflow-hidden bg-gradient-to-br ${style.gradient}`}>
-          {/* 真实图片 - 始终可见，不使用opacity隐藏 */}
-          {!imgError && (
-            <img
-              ref={imgRef}
-              src={imgData.src}
-              srcSet={imgData.srcSet}
-              sizes="(max-width: 768px) 100vw, 50vw"
-              alt={item.title}
-              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${imgLoaded ? 'scale-100' : 'scale-105'}`}
-              onLoad={() => setImgLoaded(true)}
-              onError={() => setImgError(true)}
-              loading="lazy"
-            />
-          )}
-          {/* 加载占位 - 覆盖在图片上方，加载完成后淡出 */}
-          <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 z-10 ${showPlaceholder ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-            {/* 网格装饰 */}
-            <div
-              className="absolute inset-0 opacity-[0.07]"
-              style={{
-                backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                                 linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-                backgroundSize: '32px 32px',
-              }}
-            />
-            {/* 径向光晕 */}
-            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-48 rounded-full ${style.glowColor} blur-3xl`} />
-            {/* 图标 */}
-            <div className={`relative ${style.iconColor} opacity-90 drop-shadow-lg transition-transform duration-500 group-hover:scale-110`}>
-              {style.icon}
-            </div>
+          <div
+            className="absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                               linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+              backgroundSize: '32px 32px',
+            }}
+          />
+          <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-48 rounded-full bg-white/5 blur-3xl`} />
+          <div className={`relative ${style.iconColor} opacity-60 flex items-center justify-center h-full`}>
+            {style.icon}
           </div>
-          {/* 暗色遮罩 */}
+          <img
+            src={imgSrc}
+            alt={item.title}
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            loading="lazy"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
-          {/* 标签 */}
           <div className="absolute bottom-3 left-3 z-10">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold bg-white/95 text-slate-900 backdrop-blur-sm border border-white/20 shadow-sm">
               {item.tag}
@@ -160,9 +87,7 @@ function CaseCard({ item, index }: { item: ICaseItem; index: number }) {
           </div>
         </div>
 
-        {/* 内容区 */}
         <div className="flex flex-col flex-1 p-5 md:p-6">
-          {/* 标题 + 箭头 */}
           <div className="flex items-start justify-between gap-3">
             <h3 className="text-lg font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
               {item.title}
@@ -170,12 +95,10 @@ function CaseCard({ item, index }: { item: ICaseItem; index: number }) {
             <ArrowUpRight className="size-4 shrink-0 mt-1 text-muted-foreground group-hover:text-primary transition-colors" />
           </div>
 
-          {/* 描述 */}
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
             {item.description}
           </p>
 
-          {/* 工具标签 */}
           <div className="flex flex-wrap gap-1.5 mt-4">
             {item.tools.map((tool) => (
               <span
@@ -187,7 +110,6 @@ function CaseCard({ item, index }: { item: ICaseItem; index: number }) {
             ))}
           </div>
 
-          {/* 步骤列表 */}
           {item.steps && item.steps.length > 0 && (
             <div className="mt-5 pt-4 border-t border-border flex-1">
               <p className="text-xs font-semibold text-muted-foreground mb-3">
@@ -234,7 +156,7 @@ function CaseCard({ item, index }: { item: ICaseItem; index: number }) {
           )}
         </div>
       </article>
-    </motion.div>
+    </div>
   );
 }
 
@@ -242,7 +164,6 @@ export default memo(function CasesSection({ cases }: CasesSectionProps) {
   return (
     <section id="cases" className="w-full py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        {/* 区块标题 */}
         <div className="mb-10 md:mb-14">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-xs font-bold tracking-widest text-primary uppercase">
@@ -258,10 +179,9 @@ export default memo(function CasesSection({ cases }: CasesSectionProps) {
           </p>
         </div>
 
-        {/* 案例卡片网格 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-          {cases.map((item, i) => (
-            <CaseCard key={item.id} item={item} index={i} />
+          {cases.map((item) => (
+            <CaseCard key={item.id} item={item} />
           ))}
         </div>
       </div>

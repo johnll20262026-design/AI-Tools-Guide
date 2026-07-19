@@ -1,15 +1,13 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { X, Diamond, Heart, MessageCircle, MessageSquare } from 'lucide-react';
 import { prefetchRoute } from '@/lib/prefetch';
-
-const DonateDialog = lazy(() => import('./DonateDialog'));
+import DonateDialog from './DonateDialog';
 
 export default function FloatingActionButton() {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dialogReady, setDialogReady] = useState(false);
   const [dialogType, setDialogType] = useState<'member' | 'feedback' | 'donate' | null>(null);
 
   useEffect(() => {
@@ -18,18 +16,11 @@ export default function FloatingActionButton() {
   }, [location.pathname]);
 
   useEffect(() => {
-    const preloadImages = () => {
-      const images = ['/qrcode.png', '/wechat.png', '/wechat-pay.png', '/alipay.png'];
-      images.forEach(src => {
-        const img = new Image();
-        img.src = src;
-      });
-    };
-    if ('requestIdleCallback' in window) {
-      (window as any).requestIdleCallback(preloadImages, { timeout: 1500 });
-    } else {
-      setTimeout(preloadImages, 1000);
-    }
+    const images = ['/qrcode.png', '/wechat.png', '/wechat-pay.png', '/alipay.png', '/miniprogram.png', '/website-qrcode.png'];
+    images.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
   }, []);
 
   const closeDialog = () => {
@@ -39,7 +30,6 @@ export default function FloatingActionButton() {
   const openDialog = (type: 'member' | 'feedback' | 'donate') => {
     setMenuOpen(false);
     setDialogType(type);
-    setDialogReady(true);
   };
 
   const handleHoverMembership = () => {
@@ -50,14 +40,14 @@ export default function FloatingActionButton() {
     <>
       {menuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[1px] animate-in fade-in duration-200"
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[1px]"
           onClick={() => setMenuOpen(false)}
         />
       )}
 
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
         {menuOpen && (
-          <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div className="flex flex-col gap-2">
             <button
               type="button"
               onClick={() => {
@@ -121,16 +111,12 @@ export default function FloatingActionButton() {
         </button>
       </div>
 
-      {dialogReady && (
-        <Suspense fallback={null}>
-          <DonateDialog
-            open={dialogType !== null}
-            dialogType={dialogType}
-            onClose={closeDialog}
-            onSwitchType={(type) => setDialogType(type)}
-          />
-        </Suspense>
-      )}
+      <DonateDialog
+        open={dialogType !== null}
+        dialogType={dialogType}
+        onClose={closeDialog}
+        onSwitchType={(type) => setDialogType(type)}
+      />
     </>
   );
 }

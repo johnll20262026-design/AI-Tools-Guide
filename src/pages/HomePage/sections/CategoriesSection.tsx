@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   MessageSquare,
@@ -32,7 +31,6 @@ export default memo(function CategoriesSection() {
   return (
     <section id="categories" className="w-full py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        {/* 区块标题 */}
         <div className="mb-10 md:mb-14">
           <p className="text-sm font-semibold text-primary mb-2">教程分类</p>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
@@ -43,24 +41,18 @@ export default memo(function CategoriesSection() {
           </p>
         </div>
 
-        {/* 卡片网格 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-          {MOCK_CATEGORIES.map((category, i) => {
+          {MOCK_CATEGORIES.map((category) => {
             const Icon = ICON_MAP[category.icon];
             const articles = MOCK_ARTICLES_BY_CATEGORY[category.id] ?? [];
 
             return (
-              <motion.div
+              <div
                 key={category.id}
                 id={`category-${category.id}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
               >
                 <Card className="group h-full border-border/60 bg-card shadow-sm hover:border-primary/50 hover:shadow-md transition-all duration-300">
                   <CardContent className="p-5 md:p-6 flex flex-col gap-3">
-                    {/* 图标 + 数量 */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 min-w-0">
                         <div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
@@ -72,17 +64,14 @@ export default memo(function CategoriesSection() {
                       </div>
                     </div>
 
-                    {/* 标题 */}
                     <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
                       {category.title}
                     </h3>
 
-                    {/* 描述 */}
                     <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
                       {category.description}
                     </p>
 
-                    {/* 文章标题列表 */}
                     <div className="mt-1 pt-3 border-t border-border/40 space-y-1">
                       {articles.slice(0, 5).map((article) => (
                         <Link
@@ -116,7 +105,7 @@ export default memo(function CategoriesSection() {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             );
           })}
         </div>
