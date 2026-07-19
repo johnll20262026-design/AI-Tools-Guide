@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ChevronRight, Code, Palette, Zap, Bot, Smartphone, Database, Clock, Calendar } from 'lucide-react';
@@ -86,7 +86,26 @@ function CaseCard({ item, index }: { item: ICaseItem; index: number }) {
   const style = CASE_STYLES[item.id] ?? CASE_STYLES['1'];
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
-  const showPlaceholder = !imgLoaded || imgError;
+  const imgRef = useRef<HTMLImageElement>(null);
+  const imgData = CASE_IMAGES[item.id] ?? CASE_IMAGES['1'];
+
+  useEffect(() => {
+    setImgLoaded(false);
+    setImgError(false);
+    const checkImg = () => {
+      const img = imgRef.current;
+      if (img && img.complete && img.naturalWidth > 0) {
+        setImgLoaded(true);
+      }
+    };
+    checkImg();
+    const t1 = setTimeout(checkImg, 100);
+    const t2 = setTimeout(checkImg, 500);
+    const fallback = setTimeout(() => setImgLoaded(true), 3000);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(fallback); };
+  }, [imgData.src]);
+
+  const showPlaceholder = !imgLoaded;
 
   return (
     <motion.div
@@ -99,21 +118,22 @@ function CaseCard({ item, index }: { item: ICaseItem; index: number }) {
       <article className="overflow-hidden rounded-xl border border-border bg-card shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 h-full flex flex-col group">
         {/* 封面区 */}
         <div className={`relative aspect-video overflow-hidden bg-gradient-to-br ${style.gradient}`}>
-          {/* 真实图片 */}
+          {/* 真实图片 - 始终可见，不使用opacity隐藏 */}
           {!imgError && (
             <img
-              src={(CASE_IMAGES[item.id] ?? CASE_IMAGES['1']).src}
-              srcSet={(CASE_IMAGES[item.id] ?? CASE_IMAGES['1']).srcSet}
+              ref={imgRef}
+              src={imgData.src}
+              srcSet={imgData.srcSet}
               sizes="(max-width: 768px) 100vw, 50vw"
               alt={item.title}
-              className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${imgLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'} group-hover:scale-105`}
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${imgLoaded ? 'scale-100' : 'scale-105'}`}
               onLoad={() => setImgLoaded(true)}
               onError={() => setImgError(true)}
               loading="lazy"
             />
           )}
-          {/* 加载/错误占位 */}
-          <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${showPlaceholder ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          {/* 加载占位 - 覆盖在图片上方，加载完成后淡出 */}
+          <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 z-10 ${showPlaceholder ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
             {/* 网格装饰 */}
             <div
               className="absolute inset-0 opacity-[0.07]"

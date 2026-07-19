@@ -240,12 +240,13 @@ function FireworksCanvas({ active, cx, cy }: { active: boolean; cx: number; cy: 
 
 // ========== 转盘绘制 ==========
 function drawWheel(ctx: CanvasRenderingContext2D, size: number, rotation: number, _dpr: number = 1) {
+  if (size < 40) return;
   const cx = size / 2;
   const cy = size / 2;
   const ringW = 14;
-  const outerR = size / 2 - 2;
-  const innerR = outerR - ringW;
-  const radius = innerR - 2;
+  const outerR = Math.max(1, size / 2 - 2);
+  const innerR = Math.max(1, outerR - ringW);
+  const radius = Math.max(1, innerR - 2);
 
   ctx.clearRect(0, 0, size, size);
 
@@ -358,7 +359,7 @@ export default function LotteryPage() {
   const idleLastTimeRef = useRef<number>(0);
 
   const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
-  const canvasSize = typeof window !== 'undefined' ? Math.min(460, window.innerWidth - 32) : 460;
+  const canvasSize = typeof window !== 'undefined' ? Math.max(200, Math.min(460, window.innerWidth - 32)) : 460;
   const canvasPxSize = canvasSize * dpr;
   const cx = canvasSize / 2;
   const cy = canvasSize / 2;

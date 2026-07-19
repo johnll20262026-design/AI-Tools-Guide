@@ -67,3 +67,6 @@ pnpm-lock.yaml
 # Legacy platform files
 .spark/
 .spark_project
+
+# Temporary verification scripts
+verify*.cjs

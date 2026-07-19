@@ -54,7 +54,7 @@ export function prefetchOnHover(
   onFocus: () => void;
 } {
   let done = false;
-  const trigger = (eager = false) => {
+  const trigger = (_eager = false) => {
     if (done) return;
     done = true;
     callback?.();

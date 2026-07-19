@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { QrCode, Loader2 } from 'lucide-react';
 
 interface QrCodeImageProps {
@@ -23,7 +23,39 @@ export default function QrCodeImage({
 }: QrCodeImageProps) {
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
   const isPriority = size === 'xl';
+
+  const handleLoaded = useCallback(() => {
+    setLoaded(true);
+  }, []);
+
+  const handleError = useCallback(() => {
+    setErrored(true);
+  }, []);
+
+  useEffect(() => {
+    setLoaded(false);
+    setErrored(false);
+
+    const checkImg = () => {
+      const img = imgRef.current;
+      if (img && img.complete && img.naturalWidth > 0) {
+        setLoaded(true);
+      }
+    };
+
+    checkImg();
+    const timer1 = setTimeout(checkImg, 50);
+    const timer2 = setTimeout(checkImg, 200);
+    const fallbackTimer = setTimeout(() => setLoaded(true), 2000);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(fallbackTimer);
+    };
+  }, [src]);
 
   if (errored) {
     return (
@@ -36,23 +68,24 @@ export default function QrCodeImage({
 
   return (
     <div className={`${SIZE_MAP[size].container} rounded-xl bg-white p-2 shadow-md overflow-hidden relative ${className}`}>
-      {!loaded && (
-        <div className="absolute inset-2 flex items-center justify-center bg-gray-50 rounded-lg">
-          <Loader2 className="size-8 text-primary animate-spin" />
-        </div>
-      )}
       <img
+        ref={imgRef}
         src={src}
         alt={label || '二维码'}
         width={SIZE_MAP[size].img}
         height={SIZE_MAP[size].img}
-        className={`w-full h-full object-contain transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        className="w-full h-full object-contain relative z-[1]"
         loading={isPriority ? 'eager' : 'lazy'}
         decoding="async"
         fetchPriority={isPriority ? 'high' : 'auto'}
-        onLoad={() => setLoaded(true)}
-        onError={() => setErrored(true)}
+        onLoad={handleLoaded}
+        onError={handleError}
       />
+      {!loaded && (
+        <div className="absolute inset-2 z-[2] flex items-center justify-center bg-white rounded-lg transition-opacity duration-200">
+          <Loader2 className="size-8 text-primary animate-spin" />
+        </div>
+      )}
     </div>
   );
 }
